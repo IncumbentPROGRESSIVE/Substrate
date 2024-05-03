@@ -6,7 +6,7 @@ import Flair from "./flair.jsx";
 function LandingPage() {
   return (
     <div className="landing-page">
-      <h1 className="custom-heading">Election Preview</h1>{" "}
+      <h1 className="custom-heading">Election Preview 2024</h1>{" "}
       {/* Added className */}
       <Flair />
     </div>
