@@ -1,7 +1,7 @@
 import React from "react";
 
 const secondModel = () => {
-  return <div className="flair"></div>;
+  return <div className="secondModel"></div>;
 };
 
 export default secondModel;
