@@ -53,10 +53,9 @@
   width: 100%;
   height: 100%;
   position: relative;
-  z-index: 2; /* Ensure container is above the flair */
+  z-index: 3; /* Ensure container is above the flair */
 }
 
-/* Form Styling */
 .form {
   display: flex;
   flex-direction: column;
@@ -69,7 +68,7 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.3s;
   position: relative; /* Ensure the close button is positioned relative to the form */
-  z-index: 3; /* Ensure the form is above the flair */
+  z-index: 4; /* Ensure the form is above the flair and election preview */
 }
 
 .form:hover {
@@ -85,7 +84,7 @@
   border: none;
   font-size: 1.5em;
   cursor: pointer;
-  z-index: 4; /* Ensure the close button is above the form */
+  z-index: 5; /* Ensure the close button is above the form */
 }
 
 .close-button:hover {
@@ -94,12 +93,11 @@
 
 /* Account Menu Styling */
 .account-menu {
-  display: flex;
+  display: none; /* Start with the account menu hidden */
   flex-direction: column;
   align-items: center;
   padding: 2em;
-  width: 90%;
-  max-width: 400px;
+  width: auto;
   border-radius: 15px;
   background-color: white;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
@@ -107,7 +105,11 @@
   top: 60px; /* Adjust based on the grey button size */
   right: 20px;
   transition: box-shadow 0.3s;
-  z-index: 3; /* Ensure the account menu is above the flair */
+  z-index: 4; /* Ensure the account menu is above the flair and election preview */
+}
+
+.account-menu.open {
+  display: flex; /* Show the account menu when it's open */
 }
 
 .account-username {
@@ -119,7 +121,7 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 4; /* Ensure the account menu button is above the account menu */
+  z-index: 5; /* Ensure the account menu button is above the account menu */
 }
 
 /* Input Styling */
@@ -170,20 +172,28 @@
 .logout-button {
   margin-top: 1em;
   padding: 0.75em;
-  background-color: #007bff;
+  background: linear-gradient(
+    to right,
+    #ff0000,
+    #0000ff
+  ); /* Gradient from red to blue */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1em;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: background 0.3s, transform 0.3s;
 }
 
 .button:hover,
 .toggle-button:hover,
 .menu-button:hover,
 .logout-button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(
+    to right,
+    #0000ff,
+    #ff0000
+  ); /* Reverse gradient on hover */
   transform: scale(1.05);
 }
 
@@ -242,4 +252,30 @@
   width: 50px;
   height: 50px;
   display: block;
+}
+
+.election-preview {
+  position: absolute; /* Position the element absolutely */
+  top: 20px; /* Distance from the top of the screen */
+  left: 20px; /* Distance from the left of the screen */
+  padding: 20px;
+  background: linear-gradient(to right, blue, red);
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  cursor: pointer; /* Make it look like a clickable item */
+  display: inline-block; /* Ensure the div doesn't take full width */
+}
+
+.election-preview:hover {
+  transform: scale(1.1); /* Slightly enlarge the div on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(
+    to right,
+    red,
+    blue
+  ); /* Change gradient on hover */
 }

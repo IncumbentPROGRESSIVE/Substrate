@@ -11,22 +11,33 @@ const useInput = (initialValue) => {
 function AccountState() {
   const [username, handleUsernameChange] = useInput("");
   const [password, handlePasswordChange] = useInput("");
-  const [isLogin, setIsLogin] = useState(false);
   const [showMenu, setShowMenu] = useState(false); // Start with the login menu hidden
   const [showAccountMenu, setShowAccountMenu] = useState(false); // Start with the account menu hidden
   const [showPassword, setShowPassword] = useState(false);
   const [loggedInUsername, setLoggedInUsername] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleAuth = useCallback(
-    async (url) => {
-      if (!username || !password) {
-        alert("Username and password cannot be empty");
-        return;
-      }
+  const handleAuth = useCallback(async () => {
+    if (!username || !password) {
+      alert("Username and password cannot be empty");
+      return;
+    }
 
-      try {
-        const response = await fetch(url, {
+    try {
+      const loginResponse = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (loginResponse.ok) {
+        setShowMenu(false); // Hide the menu after successful login
+        setLoggedInUsername(username); // Set the logged-in username
+        setIsAuthenticated(true); // Set authentication state
+      } else {
+        const registerResponse = await fetch("http://localhost:8080/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -34,20 +45,19 @@ function AccountState() {
           body: JSON.stringify({ username, password }),
         });
 
-        if (response.ok) {
-          setShowMenu(false); // Hide the menu after successful login
+        if (registerResponse.ok) {
+          setShowMenu(false); // Hide the menu after successful registration
           setLoggedInUsername(username); // Set the logged-in username
           setIsAuthenticated(true); // Set authentication state
         } else {
-          const errorText = await response.text();
-          alert(`${isLogin ? "Login" : "Registration"} failed: ${errorText}`);
+          const errorText = await registerResponse.text();
+          alert(`Registration failed: ${errorText}`);
         }
-      } catch (error) {
-        alert(`An error occurred. Please try again. Error: ${error.message}`);
       }
-    },
-    [username, password, isLogin]
-  );
+    } catch (error) {
+      alert(`An error occurred. Please try again. Error: ${error.message}`);
+    }
+  }, [username, password]);
 
   const handleGreyButtonClick = useCallback(() => {
     setShowAccountMenu((prevShowAccountMenu) => !prevShowAccountMenu);
@@ -101,26 +111,13 @@ function AccountState() {
               {showPassword ? "Hide Password" : "Show Password"}
             </button>
           </div>
-          <button
-            className="button"
-            onClick={() => {
-              handleAuth(
-                isLogin
-                  ? "http://localhost:8080/login"
-                  : "http://localhost:8080/register"
-              );
-            }}
-          >
-            {isLogin ? "Login" : "Register"}
+          <button className="button" onClick={handleAuth}>
+            Login / Register
           </button>
-          <CircularButton
-            onClick={() => setIsLogin(!isLogin)}
-            imageUrl="https://img.icons8.com/ios-filled/50/000000/switch.png"
-          />
         </div>
       )}
       {showAccountMenu && (
-        <div className="account-menu">
+        <div className={`account-menu ${showAccountMenu ? "open" : ""}`}>
           {isAuthenticated ? (
             <>
               <p className="account-username">
@@ -158,21 +155,9 @@ function GreyButton({ onClick }) {
   return (
     <button className="grey-button" onClick={onClick}>
       <img
-        src="https://img.icons8.com/ios-filled/50/000000/user.png"
+        src="https://img.icons8.com/ios-filled/50/000000/user-male-circle.png"
         alt="User Profile"
         className="grey-button-icon"
-      />
-    </button>
-  );
-}
-
-function CircularButton({ onClick, imageUrl }) {
-  return (
-    <button className="circular-button" onClick={onClick}>
-      <img
-        src={imageUrl}
-        alt="Toggle Button"
-        className="circular-button-image"
       />
     </button>
   );
