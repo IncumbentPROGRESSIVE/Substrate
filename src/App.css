@@ -37,10 +37,6 @@
   font-family: "Montserrat", sans-serif;
   /* Add any other desired styles */
 }
-
-/* General Styles */
-
-/* Container for the whole screen */
 .container {
   display: flex;
   flex-direction: column;
@@ -63,10 +59,54 @@
   background-color: white;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.3s;
+  position: relative; /* Ensure the close button is positioned relative to the form */
 }
 
 .form:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Close Button Styling */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #007bff;
+}
+
+/* Account Menu Styling */
+.account-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 60px; /* Adjust based on the grey button size */
+  right: 20px;
+  transition: box-shadow 0.3s;
+}
+
+.account-username {
+  margin-top: 1em;
+  font-size: 1.2em;
+}
+
+.account-menu-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 /* Input Styling */
@@ -87,9 +127,34 @@
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+.password-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: relative;
+  width: 100%;
+}
+
+/* Discreet Toggle Password Button Styling */
+.toggle-password-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0.5em 0;
+  font-size: 0.9em;
+  margin-top: 0.5em;
+}
+
+.toggle-password-button:hover {
+  color: #0056b3;
+}
+
 /* Button Styling */
 .button,
-.toggle-button {
+.toggle-button,
+.menu-button,
+.logout-button {
   margin-top: 1em;
   padding: 0.75em;
   background-color: #007bff;
@@ -102,7 +167,9 @@
 }
 
 .button:hover,
-.toggle-button:hover {
+.toggle-button:hover,
+.menu-button:hover,
+.logout-button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
 }
@@ -110,18 +177,49 @@
 /* Grey Button Styling */
 .grey-button {
   background-color: grey;
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border: none;
-  border-radius: 10px;
+  border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 1000; /* Ensure the button is above other elements */
 }
 
 .grey-button:hover {
   background-color: darkgrey;
+  transform: scale(1.05);
+}
+
+.grey-button-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Circular Button Styling */
+.circular-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  margin-top: 1em;
+}
+
+.circular-button img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.circular-button img:hover {
   transform: scale(1.05);
 }

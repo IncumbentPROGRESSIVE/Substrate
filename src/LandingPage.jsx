@@ -7,9 +7,6 @@ import Register from "./register";
 function LandingPage() {
   return (
     <div className="landing-page">
-      {/* <h1 className="custom-heading">Election Preview 2024</h1>{" "} */}
-      {/* Added className */}
-
       <Register />
     </div>
   );
