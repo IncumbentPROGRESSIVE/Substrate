@@ -1,13 +1,14 @@
 // LandingPage.jsx
 import React from "react";
 import "./App.css"; // Import the App.css file
-//import Flair from "./flair.jsx";
-import Register from "./register";
+import Flair from "./flair.jsx";
+import AccountState from "./AccountState";
 
 function LandingPage() {
   return (
     <div className="landing-page">
-      <Register />
+      <AccountState />
+      <Flair />
     </div>
   );
 }

@@ -11,10 +11,17 @@
 }
 
 .flair {
-  position: relative;
+  position: absolute; /* Change to absolute to position it within the viewport */
+  top: 50%; /* Position it 50% from the top */
+  left: 50%; /* Position it 50% from the left */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Center it by translating it by its own height and width */
   width: 100vw;
   height: 30vh; /* Adjust the height as needed */
   overflow: hidden;
+  z-index: 1; /* Ensure the flair is below other elements */
 }
 
 .flair::before {
@@ -37,6 +44,7 @@
   font-family: "Montserrat", sans-serif;
   /* Add any other desired styles */
 }
+
 .container {
   display: flex;
   flex-direction: column;
@@ -45,6 +53,7 @@
   width: 100%;
   height: 100%;
   position: relative;
+  z-index: 2; /* Ensure container is above the flair */
 }
 
 /* Form Styling */
@@ -60,6 +69,7 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.3s;
   position: relative; /* Ensure the close button is positioned relative to the form */
+  z-index: 3; /* Ensure the form is above the flair */
 }
 
 .form:hover {
@@ -75,6 +85,7 @@
   border: none;
   font-size: 1.5em;
   cursor: pointer;
+  z-index: 4; /* Ensure the close button is above the form */
 }
 
 .close-button:hover {
@@ -96,6 +107,7 @@
   top: 60px; /* Adjust based on the grey button size */
   right: 20px;
   transition: box-shadow 0.3s;
+  z-index: 3; /* Ensure the account menu is above the flair */
 }
 
 .account-username {
@@ -107,6 +119,7 @@
   position: absolute;
   top: 20px;
   right: 20px;
+  z-index: 4; /* Ensure the account menu button is above the account menu */
 }
 
 /* Input Styling */
@@ -211,6 +224,7 @@
   padding: 0;
   outline: none;
   margin-top: 1em;
+  z-index: 3; /* Ensure the circular button is above the flair */
 }
 
 .circular-button img {
@@ -222,4 +236,10 @@
 
 .circular-button img:hover {
   transform: scale(1.05);
+}
+
+.circular-button-image {
+  width: 50px;
+  height: 50px;
+  display: block;
 }

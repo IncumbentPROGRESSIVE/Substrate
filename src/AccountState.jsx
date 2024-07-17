@@ -136,7 +136,7 @@ function AccountState() {
               </button>
             </>
           ) : showMenu ? (
-            <p>Login to Access Account Settings</p>
+            <p>Log in to Access Account Settings</p>
           ) : (
             <button
               className="button"
