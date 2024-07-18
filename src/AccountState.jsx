@@ -174,7 +174,10 @@ function AccountState() {
     const handleResize = () => {
       setPosition((prevPosition) => ({
         ...prevPosition,
-        left: prevPosition.relativeLeft * window.innerWidth,
+        left: Math.min(
+          prevPosition.relativeLeft * window.innerWidth,
+          window.innerWidth - 50
+        ),
       }));
     };
 
@@ -293,10 +296,6 @@ function AccountState() {
 function GreyButton({ onClick, showAccountMenu }) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleIconMouseDown = (e) => {
-    e.stopPropagation(); // Stop propagation to prevent dragging issues
-  };
-
   return (
     <div
       className="grey-button-wrapper"
@@ -314,7 +313,6 @@ function GreyButton({ onClick, showAccountMenu }) {
           src="https://img.icons8.com/ios-filled/50/000000/gear.png"
           alt="Settings"
           className="grey-button-icon"
-          onMouseDown={handleIconMouseDown}
         />
       </button>
     </div>
