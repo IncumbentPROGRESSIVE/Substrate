@@ -67,7 +67,7 @@
   background-color: white;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.3s;
-  position: relative; /* Ensure the close button is positioned relative to the form */
+  position: absolute; /* Change to absolute for drag positioning */
   z-index: 4; /* Ensure the form is above the flair and election preview */
 }
 
@@ -101,13 +101,11 @@
   flex-direction: column;
   align-items: center;
   padding: 2em;
-  width: auto;
+  width: 300px;
   border-radius: 15px;
   background-color: white;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  position: absolute;
-  top: 60px; /* Adjust based on the grey button size */
-  right: 20px;
+  position: absolute; /* Change to absolute for drag positioning */
   transition: box-shadow 0.3s;
   z-index: 4; /* Ensure the account menu is above the flair and election preview */
 }

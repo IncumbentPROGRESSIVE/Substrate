@@ -25,8 +25,18 @@ function AccountState() {
     left: window.innerWidth - 70,
     relativeLeft: (window.innerWidth - 70) / window.innerWidth,
   });
+  const [menuPosition, setMenuPosition] = useState({
+    top: window.innerHeight / 2 - 200,
+    left: window.innerWidth / 2 - 200,
+  });
+  const [accountMenuPosition, setAccountMenuPosition] = useState({
+    top: 20,
+    left: window.innerWidth - 220,
+  });
   const dragging = useRef(false);
   const dragStartPosition = useRef({ top: 0, left: 0 });
+  const accountMenuDragging = useRef(false);
+  const registrationMenuDragging = useRef(false);
   const lastMouseDownTime = useRef(0);
 
   const handleAuth = useCallback(async () => {
@@ -154,11 +164,47 @@ function AccountState() {
           };
         });
         dragStartPosition.current = { top: e.clientY, left: e.clientX };
+      } else if (accountMenuDragging.current) {
+        const deltaY = e.clientY - dragStartPosition.current.top;
+        const deltaX = e.clientX - dragStartPosition.current.left;
+        setAccountMenuPosition((prevPosition) => ({
+          top: Math.max(
+            0,
+            Math.min(
+              prevPosition.top + deltaY,
+              window.innerHeight - accountMenuRef.current.clientHeight
+            )
+          ),
+          left: Math.max(
+            0,
+            Math.min(
+              prevPosition.left + deltaX,
+              window.innerWidth - accountMenuRef.current.clientWidth
+            )
+          ),
+        }));
+        dragStartPosition.current = { top: e.clientY, left: e.clientX };
+      } else if (registrationMenuDragging.current) {
+        const deltaY = e.clientY - dragStartPosition.current.top;
+        const deltaX = e.clientX - dragStartPosition.current.left;
+        setMenuPosition((prevPosition) => ({
+          top: Math.max(
+            0,
+            Math.min(prevPosition.top + deltaY, window.innerHeight - 400)
+          ),
+          left: Math.max(
+            0,
+            Math.min(prevPosition.left + deltaX, window.innerWidth - 400)
+          ),
+        }));
+        dragStartPosition.current = { top: e.clientY, left: e.clientX };
       }
     };
 
     const handleMouseUp = () => {
       dragging.current = false;
+      accountMenuDragging.current = false;
+      registrationMenuDragging.current = false;
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -204,6 +250,24 @@ function AccountState() {
     }
   };
 
+  const handleAccountMenuMouseDown = (e) => {
+    accountMenuDragging.current = true;
+    dragStartPosition.current = { top: e.clientY, left: e.clientX };
+  };
+
+  const handleAccountMenuMouseUp = () => {
+    accountMenuDragging.current = false;
+  };
+
+  const handleMenuMouseDown = (e) => {
+    registrationMenuDragging.current = true;
+    dragStartPosition.current = { top: e.clientY, left: e.clientX };
+  };
+
+  const handleMenuMouseUp = () => {
+    registrationMenuDragging.current = false;
+  };
+
   return (
     <div className="container">
       <div
@@ -218,7 +282,15 @@ function AccountState() {
         <GreyButton showAccountMenu={showAccountMenu} />
       </div>
       {showMenu && (
-        <div className="form">
+        <div
+          className="form"
+          style={{
+            top: `${menuPosition.top}px`,
+            left: `${menuPosition.left}px`,
+          }}
+          onMouseDown={handleMenuMouseDown}
+          onMouseUp={handleMenuMouseUp}
+        >
           <button className="close-button" onClick={() => setShowMenu(false)}>
             X
           </button>
@@ -253,6 +325,12 @@ function AccountState() {
         <div
           className={`account-menu ${showAccountMenu ? "open" : ""}`}
           ref={accountMenuRef}
+          style={{
+            top: `${accountMenuPosition.top}px`,
+            left: `${accountMenuPosition.left}px`,
+          }}
+          onMouseDown={handleAccountMenuMouseDown}
+          onMouseUp={handleAccountMenuMouseUp}
         >
           <button
             className="close-button"
