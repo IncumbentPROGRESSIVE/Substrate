@@ -208,9 +208,6 @@
   align-items: center;
   transition: opacity 0.3s ease;
   cursor: move; /* Show move cursor when hovering over the button container */
-  top: 20px; /* Initial top position */
-  left: auto; /* Added to ensure left positioning */
-  right: 20px; /* Added to ensure right positioning */
 }
 
 .hover-text {
@@ -254,4 +251,5 @@
 .grey-button-icon {
   width: 24px;
   height: 24px;
+  pointer-events: none; /* Prevent the icon from interfering with dragging */
 }
