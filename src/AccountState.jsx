@@ -20,6 +20,13 @@ function AccountState() {
   const idleTimer = useRef(null);
   const accountMenuRef = useRef(null);
   const greyButtonRef = useRef(null);
+  const [position, setPosition] = useState({
+    top: 20,
+    left: window.innerWidth - 70,
+  });
+  const dragging = useRef(false);
+  const dragStartPosition = useRef({ top: 0, left: 0 });
+  const lastMouseDownTime = useRef(0);
 
   const handleAuth = useCallback(async () => {
     if (!username || !password) {
@@ -126,6 +133,52 @@ function AccountState() {
     };
   }, [showMenu, showAccountMenu]);
 
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (dragging.current) {
+        const deltaY = e.clientY - dragStartPosition.current.top;
+        const deltaX = e.clientX - dragStartPosition.current.left;
+        setPosition((prevPosition) => ({
+          top: Math.max(
+            0,
+            Math.min(prevPosition.top + deltaY, window.innerHeight - 50)
+          ),
+          left: Math.max(
+            0,
+            Math.min(prevPosition.left + deltaX, window.innerWidth - 50)
+          ),
+        }));
+        dragStartPosition.current = { top: e.clientY, left: e.clientX };
+      }
+    };
+
+    const handleMouseUp = () => {
+      dragging.current = false;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
+  const handleMouseDown = (e) => {
+    dragging.current = true;
+    dragStartPosition.current = { top: e.clientY, left: e.clientX };
+    lastMouseDownTime.current = Date.now();
+  };
+
+  const handleMouseUp = () => {
+    dragging.current = false;
+    const mouseUpTime = Date.now();
+    if (mouseUpTime - lastMouseDownTime.current < 200) {
+      handleGreyButtonClick();
+    }
+  };
+
   return (
     <div className="container">
       <div
@@ -133,11 +186,11 @@ function AccountState() {
           !isGreyButtonVisible || showAccountMenu ? "hide" : ""
         }`}
         ref={greyButtonRef}
+        style={{ top: `${position.top}px`, left: `${position.left}px` }}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
       >
-        <GreyButton
-          onClick={handleGreyButtonClick}
-          showAccountMenu={showAccountMenu}
-        />
+        <GreyButton showAccountMenu={showAccountMenu} />
       </div>
       {showMenu && (
         <div className="form">
@@ -220,17 +273,16 @@ function GreyButton({ onClick, showAccountMenu }) {
 
   return (
     <div
-      className="grey-button-container"
+      className="grey-button-wrapper"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
     >
       {!showAccountMenu && (
         <span className={`hover-text ${isHovered ? "show" : ""}`}>
           Account Setting
         </span>
       )}
-      <button className="grey-button">
+      <button className="grey-button" onClick={onClick}>
         <img
           src="https://img.icons8.com/ios-filled/50/000000/gear.png"
           alt="Settings"

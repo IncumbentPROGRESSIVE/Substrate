@@ -204,11 +204,13 @@
 /* Grey Button Styling */
 .grey-button-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
   display: flex;
   align-items: center;
   transition: opacity 0.3s ease;
+  cursor: move; /* Show move cursor when hovering over the button container */
+  top: 20px; /* Initial top position */
+  left: auto; /* Added to ensure left positioning */
+  right: 20px; /* Added to ensure right positioning */
 }
 
 .hover-text {
@@ -252,32 +254,4 @@
 .grey-button-icon {
   width: 24px;
   height: 24px;
-}
-
-/* Circular Button Styling */
-.circular-button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  margin-top: 1em;
-  z-index: 3; /* Ensure the circular button is above the flair */
-}
-
-.circular-button img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  transition: transform 0.3s ease;
-}
-
-.circular-button img:hover {
-  transform: scale(1.05);
-}
-
-.circular-button-image {
-  width: 50px;
-  height: 50px;
-  display: block;
 }
