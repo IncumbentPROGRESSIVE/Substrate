@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import "./App.css";
 
 // Custom hook for input handling
@@ -16,6 +16,10 @@ function AccountState() {
   const [showPassword, setShowPassword] = useState(false);
   const [loggedInUsername, setLoggedInUsername] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isGreyButtonVisible, setIsGreyButtonVisible] = useState(true);
+  const idleTimer = useRef(null);
+  const accountMenuRef = useRef(null);
+  const greyButtonRef = useRef(null);
 
   const handleAuth = useCallback(async () => {
     if (!username || !password) {
@@ -81,9 +85,60 @@ function AccountState() {
     setShowPassword(!showPassword);
   };
 
+  const handleClickOutside = (event) => {
+    if (
+      accountMenuRef.current &&
+      !accountMenuRef.current.contains(event.target) &&
+      greyButtonRef.current &&
+      !greyButtonRef.current.contains(event.target)
+    ) {
+      setShowAccountMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showAccountMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showAccountMenu]);
+
+  useEffect(() => {
+    const handleMouseMove = () => {
+      if (!showMenu && !showAccountMenu) {
+        setIsGreyButtonVisible(true);
+        clearTimeout(idleTimer.current);
+        idleTimer.current = setTimeout(() => {
+          setIsGreyButtonVisible(false);
+        }, 3000);
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      clearTimeout(idleTimer.current);
+    };
+  }, [showMenu, showAccountMenu]);
+
   return (
     <div className="container">
-      <GreyButton onClick={handleGreyButtonClick} />
+      <div
+        className={`grey-button-container ${
+          !isGreyButtonVisible || showAccountMenu ? "hide" : ""
+        }`}
+        ref={greyButtonRef}
+      >
+        <GreyButton
+          onClick={handleGreyButtonClick}
+          showAccountMenu={showAccountMenu}
+        />
+      </div>
       {showMenu && (
         <div className="form">
           <button className="close-button" onClick={() => setShowMenu(false)}>
@@ -117,7 +172,16 @@ function AccountState() {
         </div>
       )}
       {showAccountMenu && (
-        <div className={`account-menu ${showAccountMenu ? "open" : ""}`}>
+        <div
+          className={`account-menu ${showAccountMenu ? "open" : ""}`}
+          ref={accountMenuRef}
+        >
+          <button
+            className="close-button"
+            onClick={() => setShowAccountMenu(false)}
+          >
+            X
+          </button>
           {isAuthenticated ? (
             <>
               <p className="account-username">
@@ -151,15 +215,29 @@ function AccountState() {
   );
 }
 
-function GreyButton({ onClick }) {
+function GreyButton({ onClick, showAccountMenu }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <button className="grey-button" onClick={onClick}>
-      <img
-        src="https://img.icons8.com/ios-filled/50/000000/user-male-circle.png"
-        alt="User Profile"
-        className="grey-button-icon"
-      />
-    </button>
+    <div
+      className="grey-button-container"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
+    >
+      {!showAccountMenu && (
+        <span className={`hover-text ${isHovered ? "show" : ""}`}>
+          Account Setting
+        </span>
+      )}
+      <button className="grey-button">
+        <img
+          src="https://img.icons8.com/ios-filled/50/000000/gear.png"
+          alt="Settings"
+          className="grey-button-icon"
+        />
+      </button>
+    </div>
   );
 }
 
