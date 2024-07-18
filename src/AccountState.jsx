@@ -23,6 +23,7 @@ function AccountState() {
   const [position, setPosition] = useState({
     top: 20,
     left: window.innerWidth - 70,
+    relativeLeft: (window.innerWidth - 70) / window.innerWidth,
   });
   const dragging = useRef(false);
   const dragStartPosition = useRef({ top: 0, left: 0 });
@@ -138,16 +139,20 @@ function AccountState() {
       if (dragging.current) {
         const deltaY = e.clientY - dragStartPosition.current.top;
         const deltaX = e.clientX - dragStartPosition.current.left;
-        setPosition((prevPosition) => ({
-          top: Math.max(
-            0,
-            Math.min(prevPosition.top + deltaY, window.innerHeight - 50)
-          ),
-          left: Math.max(
+        setPosition((prevPosition) => {
+          const newLeft = Math.max(
             0,
             Math.min(prevPosition.left + deltaX, window.innerWidth - 50)
-          ),
-        }));
+          );
+          return {
+            top: Math.max(
+              0,
+              Math.min(prevPosition.top + deltaY, window.innerHeight - 50)
+            ),
+            left: newLeft,
+            relativeLeft: newLeft / window.innerWidth,
+          };
+        });
         dragStartPosition.current = { top: e.clientY, left: e.clientX };
       }
     };
@@ -162,6 +167,21 @@ function AccountState() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setPosition((prevPosition) => ({
+        ...prevPosition,
+        left: prevPosition.relativeLeft * window.innerWidth,
+      }));
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -276,13 +296,14 @@ function GreyButton({ onClick, showAccountMenu }) {
       className="grey-button-wrapper"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
     >
       {!showAccountMenu && (
         <span className={`hover-text ${isHovered ? "show" : ""}`}>
           Account Setting
         </span>
       )}
-      <button className="grey-button" onClick={onClick}>
+      <button className="grey-button">
         <img
           src="https://img.icons8.com/ios-filled/50/000000/gear.png"
           alt="Settings"
