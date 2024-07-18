@@ -210,21 +210,6 @@
   cursor: move; /* Show move cursor when hovering over the button container */
 }
 
-.hover-text {
-  margin-right: 10px;
-  font-size: 1em;
-  color: black;
-  white-space: nowrap;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  opacity: 0;
-  transform: translateX(10px);
-}
-
-.grey-button-container:hover .hover-text {
-  opacity: 1;
-  transform: translateX(0);
-}
-
 .grey-button {
   background-color: grey;
   width: 50px;

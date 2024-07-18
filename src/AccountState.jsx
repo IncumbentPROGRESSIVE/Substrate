@@ -294,20 +294,8 @@ function AccountState() {
 }
 
 function GreyButton({ onClick, showAccountMenu }) {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
-    <div
-      className="grey-button-wrapper"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
-    >
-      {!showAccountMenu && (
-        <span className={`hover-text ${isHovered ? "show" : ""}`}>
-          Account Setting
-        </span>
-      )}
+    <div className="grey-button-wrapper" onClick={onClick}>
       <button className="grey-button">
         <img
           src="https://img.icons8.com/ios-filled/50/000000/gear.png"
