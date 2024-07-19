@@ -119,6 +119,10 @@ body {
   display: flex;
 }
 
+.account-menu:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
 .account-username {
   margin-top: 1em;
   font-size: 1.2em;
@@ -217,7 +221,7 @@ body {
 }
 
 .grey-button {
-  background-color: grey;
+  background-color: linear-gradient(to right, #ff0000, #0000ff);
   width: 50px;
   height: 50px;
   border: none;
@@ -235,7 +239,7 @@ body {
 }
 
 .grey-button:hover {
-  background-color: darkgrey;
+  background-color: linear-gradient(to right, #ff0000, #0000ff);
   transform: scale(1.05);
 }
 
