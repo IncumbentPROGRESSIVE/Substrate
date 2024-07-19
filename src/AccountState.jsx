@@ -35,7 +35,7 @@ function AccountState() {
   });
   const [accountMenuPosition, setAccountMenuPosition] = useState({
     top: 20,
-    left: window.innerWidth - 320,
+    left: Math.max(0, window.innerWidth - 320),
     relativeTop: 20 / window.innerHeight,
     relativeLeft: (window.innerWidth - 320) / window.innerWidth,
   });
@@ -130,21 +130,18 @@ function AccountState() {
       document.addEventListener("mousedown", handleClickOutside);
       // Adjust account menu position to ensure it is fully visible
       const accountMenuWidth = accountMenuRef.current.clientWidth;
-      const accountMenuHeight = accountMenuRef.current.clientHeight;
       const adjustedLeft = Math.min(
         window.innerWidth - accountMenuWidth - 20,
         window.innerWidth - accountMenuWidth
       );
-      const adjustedTop = Math.min(
-        20,
-        window.innerHeight - accountMenuHeight - 20
-      );
-      setAccountMenuPosition({
-        top: adjustedTop,
-        left: adjustedLeft,
-        relativeTop: adjustedTop / window.innerHeight,
-        relativeLeft: adjustedLeft / window.innerWidth,
-      });
+      setAccountMenuPosition((prevPosition) => ({
+        top: prevPosition.top,
+        left: Math.max(0, Math.min(prevPosition.left, adjustedLeft)),
+        relativeTop: prevPosition.relativeTop,
+        relativeLeft:
+          Math.max(0, Math.min(prevPosition.left, adjustedLeft)) /
+          window.innerWidth,
+      }));
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
@@ -156,7 +153,6 @@ function AccountState() {
 
   useEffect(() => {
     if (showMenu) {
-      // Adjust registration menu position to ensure it is centered and fully visible
       const menuWidth = menuRef.current.clientWidth;
       const menuHeight = menuRef.current.clientHeight;
       const adjustedLeft = Math.max(
@@ -173,12 +169,24 @@ function AccountState() {
           window.innerHeight - menuHeight - 20
         )
       );
-      setMenuPosition({
-        top: adjustedTop,
-        left: adjustedLeft,
-        relativeTop: adjustedTop / window.innerHeight,
-        relativeLeft: adjustedLeft / window.innerWidth,
-      });
+      setMenuPosition((prevPosition) => ({
+        top:
+          showMenu && prevPosition.relativeTop === undefined
+            ? adjustedTop
+            : prevPosition.top,
+        left:
+          showMenu && prevPosition.relativeLeft === undefined
+            ? adjustedLeft
+            : prevPosition.left,
+        relativeTop:
+          showMenu && prevPosition.relativeTop === undefined
+            ? adjustedTop / window.innerHeight
+            : prevPosition.relativeTop,
+        relativeLeft:
+          showMenu && prevPosition.relativeLeft === undefined
+            ? adjustedLeft / window.innerWidth
+            : prevPosition.relativeLeft,
+      }));
     }
   }, [showMenu]);
 
