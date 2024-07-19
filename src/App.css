@@ -1,27 +1,32 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+}
+
 .landing-page {
-  /* Landing Page */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
   background-color: #ffffff;
-  min-height: 100vh; /* Minimum height of the viewport */
-  padding: 15px; /* Increase padding to add more vertical space */
+  min-height: 100vh;
+  padding: 15px;
+  width: 100%;
 }
 
 .flair {
-  position: absolute; /* Change to absolute to position it within the viewport */
-  top: 50%; /* Position it 50% from the top */
-  left: 50%; /* Position it 50% from the left */
-  transform: translate(
-    -50%,
-    -50%
-  ); /* Center it by translating it by its own height and width */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100vw;
-  height: 30vh; /* Adjust the height as needed */
+  height: 30vh;
   overflow: hidden;
-  z-index: 1; /* Ensure the flair is below other elements */
+  z-index: 1;
 }
 
 .flair::before {
@@ -36,13 +41,12 @@
     #900603 25%,
     #002266 50%,
     #ffffff 100%
-  ); /* Adjusted gradient */
-  transform: skewY(-5deg); /* Skew the gradient */
+  );
+  transform: skewY(-5deg);
 }
 
 .custom-heading {
   font-family: "Montserrat", sans-serif;
-  /* Add any other desired styles */
 }
 
 .container {
@@ -53,7 +57,8 @@
   width: 100%;
   height: 100%;
   position: relative;
-  z-index: 3; /* Ensure container is above the flair */
+  z-index: 3;
+  max-width: 100vw;
 }
 
 .form {
@@ -63,19 +68,19 @@
   padding: 2em;
   width: 90%;
   max-width: 400px;
+  max-height: 400px; /* Ensure the form doesn't exceed the viewport height */
   border-radius: 15px;
   background-color: white;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.3s;
-  position: absolute; /* Change to absolute for drag positioning */
-  z-index: 4; /* Ensure the form is above the flair and election preview */
+  position: absolute;
+  z-index: 4;
 }
 
 .form:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Close Button Styling */
 .close-button {
   position: absolute;
   top: 10px;
@@ -84,7 +89,7 @@
   border: none;
   font-size: 1.5em;
   cursor: pointer;
-  z-index: 5; /* Ensure the close button is above the form */
+  z-index: 5;
   color: black;
 }
 
@@ -95,23 +100,23 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Account Menu Styling */
 .account-menu {
-  display: none; /* Start with the account menu hidden */
+  display: none;
   flex-direction: column;
   align-items: center;
   padding: 2em;
   width: 300px;
+  max-height: 200px; /* Ensure the account menu doesn't exceed the viewport height */
   border-radius: 15px;
   background-color: white;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  position: absolute; /* Change to absolute for drag positioning */
+  position: absolute;
   transition: box-shadow 0.3s;
-  z-index: 4; /* Ensure the account menu is above the flair and election preview */
+  z-index: 4;
 }
 
 .account-menu.open {
-  display: flex; /* Show the account menu when it's open */
+  display: flex;
 }
 
 .account-username {
@@ -123,10 +128,9 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 5; /* Ensure the account menu button is above the account menu */
+  z-index: 5;
 }
 
-/* Input Styling */
 .input {
   margin: 0.5em 0;
   padding: 0.75em;
@@ -152,7 +156,6 @@
   width: 100%;
 }
 
-/* Discreet Toggle Password Button Styling */
 .toggle-password-button {
   background: none;
   border: none;
@@ -167,18 +170,13 @@
   color: #0056b3;
 }
 
-/* Button Styling */
 .button,
 .toggle-button,
 .menu-button,
 .logout-button {
   margin-top: 1em;
   padding: 0.75em;
-  background: linear-gradient(
-    to right,
-    #ff0000,
-    #0000ff
-  ); /* Gradient from red to blue */
+  background: linear-gradient(to right, #ff0000, #0000ff);
   color: white;
   border: none;
   border-radius: 5px;
@@ -191,21 +189,31 @@
 .toggle-button:hover,
 .menu-button:hover,
 .logout-button:hover {
-  background: linear-gradient(
-    to right,
-    #0000ff,
-    #ff0000
-  ); /* Reverse gradient on hover */
+  background: linear-gradient(to right, #0000ff, #ff0000);
   transform: scale(1.05);
 }
 
-/* Grey Button Styling */
 .grey-button-container {
   position: fixed;
   display: flex;
   align-items: center;
   transition: opacity 0.3s ease;
-  cursor: move; /* Show move cursor when hovering over the button container */
+  cursor: move;
+}
+
+.hover-text {
+  margin-right: 10px;
+  font-size: 1em;
+  color: black;
+  white-space: nowrap;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.grey-button-container:hover .hover-text {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .grey-button {
@@ -234,5 +242,5 @@
 .grey-button-icon {
   width: 24px;
   height: 24px;
-  pointer-events: none; /* Prevent the icon from interfering with dragging */
+  pointer-events: none;
 }

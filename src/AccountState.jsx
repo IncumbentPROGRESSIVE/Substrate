@@ -31,7 +31,7 @@ function AccountState() {
   });
   const [accountMenuPosition, setAccountMenuPosition] = useState({
     top: 20,
-    left: window.innerWidth - 220,
+    left: window.innerWidth - 320,
   });
   const dragging = useRef(false);
   const dragStartPosition = useRef({ top: 0, left: 0 });
@@ -117,6 +117,21 @@ function AccountState() {
   useEffect(() => {
     if (showAccountMenu) {
       document.addEventListener("mousedown", handleClickOutside);
+      // Adjust account menu position to ensure it is fully visible
+      const accountMenuWidth = accountMenuRef.current.clientWidth;
+      const accountMenuHeight = accountMenuRef.current.clientHeight;
+      const adjustedLeft = Math.min(
+        window.innerWidth - accountMenuWidth - 20,
+        window.innerWidth - 50
+      );
+      const adjustedTop = Math.min(
+        20,
+        window.innerHeight - accountMenuHeight - 20
+      );
+      setAccountMenuPosition({
+        top: adjustedTop,
+        left: adjustedLeft,
+      });
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
