@@ -34,6 +34,11 @@ function AccountState() {
     top: 20,
     left: window.innerWidth - 320,
   });
+  const [zIndexState, setZIndexState] = useState({
+    greyButton: 1,
+    registrationMenu: 2,
+    accountMenu: 3,
+  });
   const dragging = useRef(false);
   const dragStartPosition = useRef({ top: 0, left: 0 });
   const accountMenuDragging = useRef(false);
@@ -286,6 +291,15 @@ function AccountState() {
     dragging.current = true;
     dragStartPosition.current = { top: e.clientY, left: e.clientX };
     lastMouseDownTime.current = Date.now();
+    setZIndexState((prevZIndexState) => ({
+      ...prevZIndexState,
+      greyButton:
+        Math.max(
+          prevZIndexState.greyButton,
+          prevZIndexState.registrationMenu,
+          prevZIndexState.accountMenu
+        ) + 1,
+    }));
   };
 
   const handleMouseUp = (e) => {
@@ -301,6 +315,15 @@ function AccountState() {
   const handleAccountMenuMouseDown = (e) => {
     accountMenuDragging.current = true;
     dragStartPosition.current = { top: e.clientY, left: e.clientX };
+    setZIndexState((prevZIndexState) => ({
+      ...prevZIndexState,
+      accountMenu:
+        Math.max(
+          prevZIndexState.greyButton,
+          prevZIndexState.registrationMenu,
+          prevZIndexState.accountMenu
+        ) + 1,
+    }));
   };
 
   const handleAccountMenuMouseUp = () => {
@@ -310,6 +333,15 @@ function AccountState() {
   const handleMenuMouseDown = (e) => {
     registrationMenuDragging.current = true;
     dragStartPosition.current = { top: e.clientY, left: e.clientX };
+    setZIndexState((prevZIndexState) => ({
+      ...prevZIndexState,
+      registrationMenu:
+        Math.max(
+          prevZIndexState.greyButton,
+          prevZIndexState.registrationMenu,
+          prevZIndexState.accountMenu
+        ) + 1,
+    }));
   };
 
   const handleMenuMouseUp = () => {
@@ -323,7 +355,11 @@ function AccountState() {
           !isGreyButtonVisible || showAccountMenu ? "hide" : ""
         }`}
         ref={greyButtonRef}
-        style={{ top: `${position.top}px`, left: `${position.left}px` }}
+        style={{
+          top: `${position.top}px`,
+          left: `${position.left}px`,
+          zIndex: zIndexState.greyButton,
+        }}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
       >
@@ -336,6 +372,7 @@ function AccountState() {
           style={{
             top: `${menuPosition.top}px`,
             left: `${menuPosition.left}px`,
+            zIndex: zIndexState.registrationMenu,
           }}
           onMouseDown={handleMenuMouseDown}
           onMouseUp={handleMenuMouseUp}
@@ -377,6 +414,7 @@ function AccountState() {
           style={{
             top: `${accountMenuPosition.top}px`,
             left: `${accountMenuPosition.left}px`,
+            zIndex: zIndexState.accountMenu,
           }}
           onMouseDown={handleAccountMenuMouseDown}
           onMouseUp={handleAccountMenuMouseUp}
