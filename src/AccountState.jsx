@@ -296,7 +296,10 @@ function AccountState() {
     const handleResize = () => {
       setPosition((prevPosition) => ({
         top: prevPosition.relativeTop * window.innerHeight,
-        left: prevPosition.relativeLeft * window.innerWidth,
+        left: Math.min(
+          prevPosition.relativeLeft * window.innerWidth,
+          window.innerWidth - 50
+        ),
         relativeTop: prevPosition.relativeTop,
         relativeLeft: prevPosition.relativeLeft,
       }));
