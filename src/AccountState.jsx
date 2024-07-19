@@ -24,15 +24,20 @@ function AccountState() {
   const [position, setPosition] = useState({
     top: 20,
     left: window.innerWidth - 70,
+    relativeTop: 20 / window.innerHeight,
     relativeLeft: (window.innerWidth - 70) / window.innerWidth,
   });
   const [menuPosition, setMenuPosition] = useState({
     top: window.innerHeight / 2 - 200,
     left: window.innerWidth / 2 - 200,
+    relativeTop: (window.innerHeight / 2 - 200) / window.innerHeight,
+    relativeLeft: (window.innerWidth / 2 - 200) / window.innerWidth,
   });
   const [accountMenuPosition, setAccountMenuPosition] = useState({
     top: 20,
     left: window.innerWidth - 320,
+    relativeTop: 20 / window.innerHeight,
+    relativeLeft: (window.innerWidth - 320) / window.innerWidth,
   });
   const [zIndexState, setZIndexState] = useState({
     greyButton: 1,
@@ -137,6 +142,8 @@ function AccountState() {
       setAccountMenuPosition({
         top: adjustedTop,
         left: adjustedLeft,
+        relativeTop: adjustedTop / window.innerHeight,
+        relativeLeft: adjustedLeft / window.innerWidth,
       });
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -169,6 +176,8 @@ function AccountState() {
       setMenuPosition({
         top: adjustedTop,
         left: adjustedLeft,
+        relativeTop: adjustedTop / window.innerHeight,
+        relativeLeft: adjustedLeft / window.innerWidth,
       });
     }
   }, [showMenu]);
@@ -201,12 +210,14 @@ function AccountState() {
             0,
             Math.min(prevPosition.left + deltaX, window.innerWidth - 50)
           );
+          const newTop = Math.max(
+            0,
+            Math.min(prevPosition.top + deltaY, window.innerHeight - 50)
+          );
           return {
-            top: Math.max(
-              0,
-              Math.min(prevPosition.top + deltaY, window.innerHeight - 50)
-            ),
+            top: newTop,
             left: newLeft,
+            relativeTop: newTop / window.innerHeight,
             relativeLeft: newLeft / window.innerWidth,
           };
         });
@@ -214,42 +225,54 @@ function AccountState() {
       } else if (accountMenuDragging.current) {
         const deltaY = e.clientY - dragStartPosition.current.top;
         const deltaX = e.clientX - dragStartPosition.current.left;
-        setAccountMenuPosition((prevPosition) => ({
-          top: Math.max(
-            0,
-            Math.min(
-              prevPosition.top + deltaY,
-              window.innerHeight - accountMenuRef.current.clientHeight - 20
-            )
-          ),
-          left: Math.max(
+        setAccountMenuPosition((prevPosition) => {
+          const newLeft = Math.max(
             0,
             Math.min(
               prevPosition.left + deltaX,
               window.innerWidth - accountMenuRef.current.clientWidth - 20
             )
-          ),
-        }));
+          );
+          const newTop = Math.max(
+            0,
+            Math.min(
+              prevPosition.top + deltaY,
+              window.innerHeight - accountMenuRef.current.clientHeight - 20
+            )
+          );
+          return {
+            top: newTop,
+            left: newLeft,
+            relativeTop: newTop / window.innerHeight,
+            relativeLeft: newLeft / window.innerWidth,
+          };
+        });
         dragStartPosition.current = { top: e.clientY, left: e.clientX };
       } else if (registrationMenuDragging.current) {
         const deltaY = e.clientY - dragStartPosition.current.top;
         const deltaX = e.clientX - dragStartPosition.current.left;
-        setMenuPosition((prevPosition) => ({
-          top: Math.max(
-            0,
-            Math.min(
-              prevPosition.top + deltaY,
-              window.innerHeight - menuRef.current.clientHeight - 20
-            )
-          ),
-          left: Math.max(
+        setMenuPosition((prevPosition) => {
+          const newLeft = Math.max(
             0,
             Math.min(
               prevPosition.left + deltaX,
               window.innerWidth - menuRef.current.clientWidth - 20
             )
-          ),
-        }));
+          );
+          const newTop = Math.max(
+            0,
+            Math.min(
+              prevPosition.top + deltaY,
+              window.innerHeight - menuRef.current.clientHeight - 20
+            )
+          );
+          return {
+            top: newTop,
+            left: newLeft,
+            relativeTop: newTop / window.innerHeight,
+            relativeLeft: newLeft / window.innerWidth,
+          };
+        });
         dragStartPosition.current = { top: e.clientY, left: e.clientX };
       }
     };
@@ -272,41 +295,44 @@ function AccountState() {
   useEffect(() => {
     const handleResize = () => {
       setPosition((prevPosition) => ({
-        ...prevPosition,
-        left: Math.min(
-          prevPosition.relativeLeft * window.innerWidth,
-          window.innerWidth - 50
-        ),
+        top: prevPosition.relativeTop * window.innerHeight,
+        left: prevPosition.relativeLeft * window.innerWidth,
+        relativeTop: prevPosition.relativeTop,
+        relativeLeft: prevPosition.relativeLeft,
       }));
       // Adjust account menu position to stay within screen bounds
       setAccountMenuPosition((prevPosition) => ({
         top: Math.min(
-          prevPosition.top,
+          prevPosition.relativeTop * window.innerHeight,
           window.innerHeight -
             (accountMenuRef.current ? accountMenuRef.current.clientHeight : 0) -
             20
         ),
         left: Math.min(
-          prevPosition.left,
+          prevPosition.relativeLeft * window.innerWidth,
           window.innerWidth -
             (accountMenuRef.current ? accountMenuRef.current.clientWidth : 0) -
             20
         ),
+        relativeTop: prevPosition.relativeTop,
+        relativeLeft: prevPosition.relativeLeft,
       }));
       // Adjust registration menu position to stay within screen bounds
       setMenuPosition((prevPosition) => ({
         top: Math.min(
-          prevPosition.top,
+          prevPosition.relativeTop * window.innerHeight,
           window.innerHeight -
             (menuRef.current ? menuRef.current.clientHeight : 0) -
             20
         ),
         left: Math.min(
-          prevPosition.left,
+          prevPosition.relativeLeft * window.innerWidth,
           window.innerWidth -
             (menuRef.current ? menuRef.current.clientWidth : 0) -
             20
         ),
+        relativeTop: prevPosition.relativeTop,
+        relativeLeft: prevPosition.relativeLeft,
       }));
     };
 
