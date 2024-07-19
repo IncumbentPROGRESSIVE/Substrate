@@ -303,7 +303,10 @@ function AccountState() {
   useEffect(() => {
     const handleResize = () => {
       setPosition((prevPosition) => ({
-        top: prevPosition.relativeTop * window.innerHeight,
+        top: Math.min(
+          prevPosition.relativeTop * window.innerHeight,
+          window.innerHeight - 50
+        ),
         left: Math.min(
           prevPosition.relativeLeft * window.innerWidth,
           window.innerWidth - 50
