@@ -278,6 +278,36 @@ function AccountState() {
           window.innerWidth - 50
         ),
       }));
+      // Adjust account menu position to stay within screen bounds
+      setAccountMenuPosition((prevPosition) => ({
+        top: Math.min(
+          prevPosition.top,
+          window.innerHeight -
+            (accountMenuRef.current ? accountMenuRef.current.clientHeight : 0) -
+            20
+        ),
+        left: Math.min(
+          prevPosition.left,
+          window.innerWidth -
+            (accountMenuRef.current ? accountMenuRef.current.clientWidth : 0) -
+            20
+        ),
+      }));
+      // Adjust registration menu position to stay within screen bounds
+      setMenuPosition((prevPosition) => ({
+        top: Math.min(
+          prevPosition.top,
+          window.innerHeight -
+            (menuRef.current ? menuRef.current.clientHeight : 0) -
+            20
+        ),
+        left: Math.min(
+          prevPosition.left,
+          window.innerWidth -
+            (menuRef.current ? menuRef.current.clientWidth : 0) -
+            20
+        ),
+      }));
     };
 
     window.addEventListener("resize", handleResize);
