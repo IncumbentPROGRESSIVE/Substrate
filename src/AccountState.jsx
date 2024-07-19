@@ -20,6 +20,7 @@ function AccountState() {
   const idleTimer = useRef(null);
   const accountMenuRef = useRef(null);
   const greyButtonRef = useRef(null);
+  const menuRef = useRef(null);
   const [position, setPosition] = useState({
     top: 20,
     left: window.innerWidth - 70,
@@ -142,6 +143,32 @@ function AccountState() {
   }, [showAccountMenu]);
 
   useEffect(() => {
+    if (showMenu) {
+      // Adjust registration menu position to ensure it is centered and fully visible
+      const menuWidth = menuRef.current.clientWidth;
+      const menuHeight = menuRef.current.clientHeight;
+      const adjustedLeft = Math.max(
+        0,
+        Math.min(
+          window.innerWidth / 2 - menuWidth / 2,
+          window.innerWidth - menuWidth
+        )
+      );
+      const adjustedTop = Math.max(
+        0,
+        Math.min(
+          window.innerHeight / 2 - menuHeight / 2,
+          window.innerHeight - menuHeight
+        )
+      );
+      setMenuPosition({
+        top: adjustedTop,
+        left: adjustedLeft,
+      });
+    }
+  }, [showMenu]);
+
+  useEffect(() => {
     const handleMouseMove = () => {
       if (!showMenu && !showAccountMenu) {
         setIsGreyButtonVisible(true);
@@ -205,11 +232,17 @@ function AccountState() {
         setMenuPosition((prevPosition) => ({
           top: Math.max(
             0,
-            Math.min(prevPosition.top + deltaY, window.innerHeight - 400)
+            Math.min(
+              prevPosition.top + deltaY,
+              window.innerHeight - menuRef.current.clientHeight
+            )
           ),
           left: Math.max(
             0,
-            Math.min(prevPosition.left + deltaX, window.innerWidth - 400)
+            Math.min(
+              prevPosition.left + deltaX,
+              window.innerWidth - menuRef.current.clientWidth
+            )
           ),
         }));
         dragStartPosition.current = { top: e.clientY, left: e.clientX };
@@ -299,6 +332,7 @@ function AccountState() {
       {showMenu && (
         <div
           className="form"
+          ref={menuRef}
           style={{
             top: `${menuPosition.top}px`,
             left: `${menuPosition.left}px`,
