@@ -128,7 +128,7 @@ function AccountState() {
       const accountMenuHeight = accountMenuRef.current.clientHeight;
       const adjustedLeft = Math.min(
         window.innerWidth - accountMenuWidth - 20,
-        window.innerWidth - 50
+        window.innerWidth - accountMenuWidth
       );
       const adjustedTop = Math.min(
         20,
@@ -156,14 +156,14 @@ function AccountState() {
         0,
         Math.min(
           window.innerWidth / 2 - menuWidth / 2,
-          window.innerWidth - menuWidth
+          window.innerWidth - menuWidth - 20
         )
       );
       const adjustedTop = Math.max(
         0,
         Math.min(
           window.innerHeight / 2 - menuHeight / 2,
-          window.innerHeight - menuHeight
+          window.innerHeight - menuHeight - 20
         )
       );
       setMenuPosition({
@@ -219,14 +219,14 @@ function AccountState() {
             0,
             Math.min(
               prevPosition.top + deltaY,
-              window.innerHeight - accountMenuRef.current.clientHeight
+              window.innerHeight - accountMenuRef.current.clientHeight - 20
             )
           ),
           left: Math.max(
             0,
             Math.min(
               prevPosition.left + deltaX,
-              window.innerWidth - accountMenuRef.current.clientWidth
+              window.innerWidth - accountMenuRef.current.clientWidth - 20
             )
           ),
         }));
@@ -239,14 +239,14 @@ function AccountState() {
             0,
             Math.min(
               prevPosition.top + deltaY,
-              window.innerHeight - menuRef.current.clientHeight
+              window.innerHeight - menuRef.current.clientHeight - 20
             )
           ),
           left: Math.max(
             0,
             Math.min(
               prevPosition.left + deltaX,
-              window.innerWidth - menuRef.current.clientWidth
+              window.innerWidth - menuRef.current.clientWidth - 20
             )
           ),
         }));
