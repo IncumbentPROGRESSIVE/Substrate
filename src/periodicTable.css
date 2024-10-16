@@ -1,141 +1,123 @@
-.periodic-table-container {
+/* periodicTable.css */
+
+.periodic-table-wrapper {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  height: 100vh;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 .periodic-table {
   display: grid;
-  grid-template-columns: repeat(
-    18,
-    1fr
-  ); /* 18 columns for the periodic table */
-  grid-auto-rows: minmax(40px, auto);
-  gap: 4px;
-  width: 90vw;
-  height: 90vh;
-  max-width: 100%;
-  max-height: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  margin: 0 auto;
-  position: relative;
-}
-
-.group-numbers {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 5px;
-}
-
-.group-number {
-  font-size: 0.8em;
-  font-weight: bold;
+  grid-template-columns: repeat(18, minmax(30px, 1fr)); /* Compact width */
+  grid-auto-rows: minmax(40px, 50px); /* Compact height */
+  gap: 6px;
+  justify-items: center;
+  align-items: center;
 }
 
 .element {
+  background-color: var(--element-color);
+  border: 1px solid #ddd; /* Subtle borders */
+  border-radius: 8px;
+  padding: 6px;
+  text-align: center;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 5px;
-  box-sizing: border-box;
-  font-size: calc(0.8vw + 0.5vh);
-  overflow: hidden;
-  text-align: center;
-  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  font-size: 0.8rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  position: relative;
 }
 
 .element:hover {
-  transform: scale(1.15);
-  z-index: 1;
-  background-color: #e0e0e0;
+  transform: translateY(-5px); /* Slight lift without distorting lines */
+  background-color: #fff; /* Hover color change for clarity */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for 3D effect */
+  z-index: 10;
 }
 
-.symbol {
-  font-size: 1.2em;
-  font-weight: bold;
+/* Add a 3D depth border effect */
+.element::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(0, 0, 0, 0.1)
+  );
+  transition: opacity 0.3s ease;
+}
+
+.element:hover::before {
+  opacity: 0;
 }
 
 .number {
-  font-size: 0.7em;
+  font-size: 0.7rem;
+  margin-bottom: 2px;
+}
+
+.symbol {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 2px;
 }
 
 .name {
-  font-size: 0.6em;
+  font-size: 0.6rem;
+  margin-bottom: 2px;
 }
 
-.oxidation-states {
-  font-size: 0.5em;
-  margin-top: 4px;
-}
-
-.element span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
+/* Element category colors */
 .alkali-metal {
-  background-color: #ffddc1; /* Light orange */
+  background-color: #f28f3b;
 }
 
 .alkaline-earth-metal {
-  background-color: #c1e1c5; /* Light green */
+  background-color: #f94144;
 }
 
 .transition-metal {
-  background-color: #c1c8e4; /* Light blue */
+  background-color: #577590;
 }
 
-.lanthanide {
-  background-color: #e8c1e1; /* Light pink */
-}
-
-.actinide {
-  background-color: #c1a3a3; /* Light brown */
-}
-
-.metal {
-  background-color: #f5c6a5; /* Light peach */
-}
-
-.metalloid {
-  background-color: #a3d6d3; /* Light cyan */
+.other-metal {
+  background-color: #f3722c;
 }
 
 .nonmetal {
-  background-color: #f5e4c1; /* Light yellow */
+  background-color: #90be6d;
 }
 
-.halogen {
-  background-color: #ffe4e1; /* Pale red */
+.metalloid {
+  background-color: #277da1;
 }
 
 .noble-gas {
-  background-color: #d1f0e1; /* Light mint green */
+  background-color: #4d908e;
 }
 
-/* Add styles for group numbers */
-.group-label {
-  position: absolute;
-  top: -20px;
-  width: 100%;
-  text-align: center;
-  font-size: 0.8em;
-  font-weight: bold;
+.lanthanide {
+  background-color: #f8961e;
 }
 
-.row-label {
-  position: absolute;
-  left: -20px;
-  height: 100%;
-  writing-mode: vertical-rl;
-  text-align: center;
-  font-size: 0.8em;
-  font-weight: bold;
+.actinide {
+  background-color: #f9844a;
+}
+
+.element {
+  border-radius: 6px;
 }
