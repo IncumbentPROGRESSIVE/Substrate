@@ -1,4 +1,3 @@
-// PeriodicTable.js
 import React from "react";
 import { mergePeriodicTableData } from "./mergePeriodicTableData";
 import "./periodicTable.css"; // Import the dedicated CSS file for the periodic table
@@ -11,7 +10,7 @@ function PeriodicTable() {
       {elements.map((element) => (
         <div
           key={element.symbol}
-          className={`element ${element.category}`}
+          className={`element ${element.category}`} // Adding a class based on the category of the element
           style={{
             gridColumn: element.xpos,
             gridRow: element.ypos,
