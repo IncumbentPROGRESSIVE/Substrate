@@ -197,9 +197,11 @@ body {
 
 .grey-button-container {
   position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 5; /* Ensures it stays on top */
   display: flex;
   align-items: center;
-  transition: opacity 0.3s ease;
   cursor: move;
 }
 

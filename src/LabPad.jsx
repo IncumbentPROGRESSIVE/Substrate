@@ -1,7 +1,7 @@
 // LabPad.jsx
 import React, { useState } from "react";
 import { DndContext, useDroppable } from "@dnd-kit/core";
-import "./labPad.css";
+import "./LabPad.css";
 
 const LabPad = () => {
   const [elements, setElements] = useState([]);

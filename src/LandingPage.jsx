@@ -1,16 +1,20 @@
-// LandingPage.js
+// LandingPage.jsx
 import React from "react";
-import "./App.css"; // General app styling
 import AccountState from "./AccountState";
-import PeriodicTable from "./PeriodicTable.jsx";
+import LabPad from "./LabPad";
+import PeriodicTable from "./PeriodicTable";
+import "./App.css";
 
-function LandingPage() {
+const LandingPage = () => {
   return (
     <div className="landing-page">
       <AccountState />
+
       <PeriodicTable />
+
+      <LabPad />
     </div>
   );
-}
+};
 
 export default LandingPage;
