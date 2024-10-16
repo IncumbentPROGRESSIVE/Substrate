@@ -32,6 +32,9 @@ function PeriodicTable() {
                 <span className="number">{element.number}</span>
                 <span className="symbol">{element.symbol}</span>
                 <span className="name">{element.name}</span>
+                <span className="atomic-mass">
+                  {parseFloat(element.atomic_mass).toFixed(2)}
+                </span>
               </div>
             ))}
           </div>

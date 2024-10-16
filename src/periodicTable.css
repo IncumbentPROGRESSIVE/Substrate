@@ -1,5 +1,4 @@
-/* periodicTable.css */
-
+/* Resetting default styles */
 html,
 body {
   margin: 0;
@@ -10,34 +9,37 @@ body {
   font-family: Arial, sans-serif;
 }
 
+/* Wrapper for the entire table */
 .periodic-table-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100vw;
-  padding: 20px;
+
   box-sizing: border-box;
 }
 
+/* Periodic Table layout */
 .periodic-table {
   display: grid;
-  grid-template-columns: repeat(18, minmax(30px, 1fr));
-  grid-template-rows: repeat(9, minmax(40px, 1fr));
-  gap: 6px;
-  width: calc(100% - 30px);
-  height: calc(100% - 30px);
+  grid-template-columns: repeat(18, 1fr); /* 18 columns */
+  grid-auto-rows: minmax(45px, 1fr); /* Taller rows for better spacing */
+  gap: 14px 12px; /* 16px vertical gap, 8px horizontal gap */
+  width: calc(95% - 20px); /* Slightly smaller table to fit comfortably */
+  height: calc(95% - 20px);
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
+/* Styling for individual elements */
 .element {
   background-color: var(--element-color);
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 5px;
+  border-radius: 12px; /* Rounded corners */
+  aspect-ratio: 1 / 1; /* Keep elements square */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,13 +48,45 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
   cursor: pointer;
   position: relative;
+  overflow: hidden; /* Avoid content overflow */
 }
 
+/* Hover effect */
 .element:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px); /* Gentle lift */
   background-color: #fff;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   z-index: 10;
+}
+
+/* Styling for element text */
+.number {
+  font-size: 0.6rem;
+  margin-bottom: 2px;
+}
+
+.symbol {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.name {
+  font-size: 0.55rem;
+  margin-bottom: 2px;
+}
+
+/* Atomic mass styling - Hidden initially */
+.atomic-mass {
+  font-size: 0.5rem;
+  color: #555;
+  height: 1em; /* Reserve space to avoid jitter */
+  line-height: 1em;
+}
+
+/* Reveal atomic mass on hover */
+.element:hover .atomic-mass {
+  visibility: visible;
 }
 
 /* Toggle Button Styling */
@@ -60,12 +94,12 @@ body {
   position: fixed;
   bottom: 10px;
   left: 10px;
-  padding: 12px 18px;
+  padding: 10px 16px;
   background: linear-gradient(45deg, #6a11cb, #2575fc);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
   z-index: 5;
@@ -75,23 +109,6 @@ body {
 .toggle-button:hover {
   background: linear-gradient(45deg, #2575fc, #6a11cb);
   transform: scale(1.1);
-}
-
-/* Styling for element text */
-.number {
-  font-size: 0.7rem;
-  margin-bottom: 2px;
-}
-
-.symbol {
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin-bottom: 2px;
-}
-
-.name {
-  font-size: 0.6rem;
-  margin-bottom: 2px;
 }
 
 /* Element category colors */
