@@ -47,6 +47,12 @@ function DraggableElement({ element }) {
     cursor: "grab",
   };
 
+  // Format atomic mass: Remove trailing .000 if it exists.
+  const formattedMass =
+    element.atomic_mass % 1 === 0
+      ? element.atomic_mass.toFixed(0)
+      : element.atomic_mass.toFixed(3);
+
   return (
     <div
       ref={setNodeRef}
@@ -58,7 +64,7 @@ function DraggableElement({ element }) {
       <span className="number">{element.number}</span>
       <span className="symbol">{element.symbol}</span>
       <span className="name">{element.name}</span>
-      <span className="atomic-mass">{element.atomic_mass.toFixed(3)}</span>
+      <span className="atomic-mass">{formattedMass}</span>
     </div>
   );
 }
