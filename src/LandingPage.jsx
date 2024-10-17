@@ -1,18 +1,38 @@
 // LandingPage.jsx
-import React from "react";
+import React, { useState } from "react";
 import AccountState from "./AccountState";
 import LabPad from "./LabPad";
 import PeriodicTable from "./PeriodicTable";
 import "./App.css";
 
 const LandingPage = () => {
+  const [isLabPadVisible, setIsLabPadVisible] = useState(false);
+  const [draggedElement, setDraggedElement] = useState(null);
+
+  const handleElementDragEnd = (id) => {
+    if (id) {
+      setDraggedElement(id);
+      setIsLabPadVisible(true);
+    }
+  };
+
+  const handleToggleClick = () => {
+    setIsLabPadVisible(false);
+  };
+
   return (
     <div className="landing-page">
       <AccountState />
 
-      <PeriodicTable />
+      <button className="toggle-button" onClick={handleToggleClick}>
+        {isLabPadVisible ? "Back to Table" : "Show LabPad"}
+      </button>
 
-      <LabPad />
+      {isLabPadVisible ? (
+        <LabPad element={draggedElement} />
+      ) : (
+        <PeriodicTable onElementDragEnd={handleElementDragEnd} />
+      )}
     </div>
   );
 };

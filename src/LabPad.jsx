@@ -1,27 +1,46 @@
 // LabPad.jsx
-import React, { useState } from "react";
-import { DndContext, useDroppable } from "@dnd-kit/core";
+import React from "react";
+import {
+  DndContext,
+  useDraggable,
+  useSensor,
+  PointerSensor,
+} from "@dnd-kit/core";
 import "./LabPad.css";
 
-const LabPad = () => {
-  const [elements, setElements] = useState([]);
-  const { setNodeRef } = useDroppable({ id: "labpad" });
+const LabPad = ({ element }) => {
+  const sensors = [useSensor(PointerSensor)];
 
-  const handleDrop = (event) => {
-    const { active } = event;
-    setElements((prev) => [...prev, active.id]);
+  return (
+    <DndContext sensors={sensors}>
+      <div className="lab-pad">
+        <DraggableLabElement symbol={element} />
+      </div>
+    </DndContext>
+  );
+};
+
+const DraggableLabElement = ({ symbol }) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: symbol,
+  });
+
+  const style = {
+    transform: transform
+      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      : undefined,
   };
 
   return (
-    <DndContext onDragEnd={handleDrop}>
-      <div ref={setNodeRef} className="lab-pad">
-        {elements.map((element, index) => (
-          <div key={index} className="lab-element">
-            {element}
-          </div>
-        ))}
-      </div>
-    </DndContext>
+    <div
+      ref={setNodeRef}
+      className="lab-element"
+      style={style}
+      {...listeners}
+      {...attributes}
+    >
+      {symbol}
+    </div>
   );
 };
 

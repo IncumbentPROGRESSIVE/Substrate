@@ -12,11 +12,9 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: whitesmoke;
-  min-height: 100vh;
-  padding: 15px;
   width: 100%;
-  position: relative; /* Added position relative to contain the absolute positioned flair */
+  background-color: whitesmoke;
+  position: relative;
 }
 
 @keyframes flairAnimation {

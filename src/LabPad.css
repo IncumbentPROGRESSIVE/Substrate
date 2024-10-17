@@ -1,9 +1,7 @@
 .lab-pad {
-  width: 80%;
-  height: 70vh;
-  border: 2px dashed black;
-  margin: 20px auto;
-  overflow-y: auto;
+  width: 100vw;
+  height: 100vh;
+  background-color: #e0f7fa;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -15,4 +13,7 @@
   padding: 10px;
   background-color: lightblue;
   border-radius: 8px;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: grab;
 }

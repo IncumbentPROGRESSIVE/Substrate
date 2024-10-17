@@ -89,21 +89,19 @@ body {
   visibility: visible;
 }
 
-/* Toggle Button Styling */
 .toggle-button {
   position: fixed;
   bottom: 10px;
   left: 10px;
-  padding: 10px 16px;
+  padding: 12px 18px;
   background: linear-gradient(45deg, #6a11cb, #2575fc);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   z-index: 5;
-  transition: background 0.3s, transform 0.3s;
 }
 
 .toggle-button:hover {
