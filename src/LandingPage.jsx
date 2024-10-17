@@ -17,7 +17,7 @@ const LandingPage = () => {
   };
 
   const handleToggleClick = () => {
-    setIsLabPadVisible(false);
+    setIsLabPadVisible((prev) => !prev);
   };
 
   return (

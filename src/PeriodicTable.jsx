@@ -13,8 +13,7 @@ function PeriodicTable({ onElementDragEnd }) {
   const elements = mergePeriodicTableData();
   const sensors = [
     useSensor(PointerSensor, { activationConstraint: { distance: 10 } }),
-  ];
-  // Adds a small threshold to detect noticeable drag.
+  ]; // Noticeable drag detection.
 
   return (
     <DndContext
@@ -45,7 +44,7 @@ function DraggableElement({ element }) {
     gridColumn: element.xpos,
     gridRow: element.ypos,
     zIndex: isDragging ? 999 : 1,
-    cursor: "grab", // Improve drag UI feedback.
+    cursor: "grab",
   };
 
   return (
