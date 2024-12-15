@@ -12,8 +12,17 @@ const LabPad = ({ elements, updateElementPosition }) => {
 
   const handleDragEnd = (event) => {
     const { id } = event.active;
-    const { x, y } = event.delta;
-    updateElementPosition(id, { x, y });
+    const { delta } = event;
+
+    const draggedElement = elements.find((el) => el.id === id);
+    if (draggedElement) {
+      const newPosition = {
+        x: Math.max(0, draggedElement.position.x + delta.x),
+        y: Math.max(0, draggedElement.position.y + delta.y),
+      };
+
+      updateElementPosition(id, newPosition);
+    }
   };
 
   return (
@@ -43,6 +52,8 @@ const DraggableLabElement = ({ symbol, initialPosition }) => {
         }px, 0)`
       : `translate3d(${initialPosition.x}px, ${initialPosition.y}px, 0)`,
     position: "absolute",
+    zIndex: 10, // Ensure elements are always visible
+    touchAction: "none",
   };
 
   return (

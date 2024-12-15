@@ -2,10 +2,8 @@
   width: 100vw;
   height: 100vh;
   background-color: #e0f7fa;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  padding: 10px;
+  position: relative;
+  overflow: hidden; /* Prevent elements from going outside the LabPad */
 }
 
 .lab-element {
@@ -16,4 +14,6 @@
   font-size: 2rem;
   font-weight: bold;
   cursor: grab;
+  position: absolute;
+  z-index: 10; /* Keep the element on top */
 }
