@@ -1,19 +1,25 @@
 .lab-pad {
   width: 100vw;
   height: 100vh;
-  background-color: #e0f7fa;
-  position: relative;
-  overflow: hidden; /* Prevent elements from going outside the LabPad */
+  background-color: #e0f7fa; /* Full-screen light blue */
+  position: fixed; /* Ensure full coverage */
+  top: 0;
+  left: 0;
+  overflow: hidden; /* Prevent dragging out of bounds */
 }
 
 .lab-element {
-  margin: 5px;
-  padding: 10px;
+  width: 50px;
+  height: 50px;
   background-color: lightblue;
   border-radius: 8px;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: grab;
   position: absolute;
-  z-index: 10; /* Keep the element on top */
+  z-index: 10;
+  touch-action: none;
 }

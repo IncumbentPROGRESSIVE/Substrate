@@ -14,15 +14,13 @@ const LabPad = ({ elements, updateElementPosition }) => {
     const { id } = event.active;
     const { delta } = event;
 
-    const draggedElement = elements.find((el) => el.id === id);
-    if (draggedElement) {
-      const newPosition = {
-        x: Math.max(0, draggedElement.position.x + delta.x),
-        y: Math.max(0, draggedElement.position.y + delta.y),
-      };
+    if (!id || !delta) return;
 
-      updateElementPosition(id, newPosition);
-    }
+    // Update the element's position in the state
+    updateElementPosition(id, (prevPosition) => ({
+      x: prevPosition.x + delta.x,
+      y: prevPosition.y + delta.y,
+    }));
   };
 
   return (
@@ -31,8 +29,8 @@ const LabPad = ({ elements, updateElementPosition }) => {
         {elements.map((element) => (
           <DraggableLabElement
             key={element.id}
-            symbol={element.id}
-            initialPosition={element.position}
+            id={element.id}
+            position={element.position}
           />
         ))}
       </div>
@@ -40,19 +38,18 @@ const LabPad = ({ elements, updateElementPosition }) => {
   );
 };
 
-const DraggableLabElement = ({ symbol, initialPosition }) => {
+const DraggableLabElement = ({ id, position }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: symbol,
+    id,
   });
 
+  // Combine the persisted position and the temporary transform
   const style = {
-    transform: transform
-      ? `translate3d(${initialPosition.x + transform.x}px, ${
-          initialPosition.y + transform.y
-        }px, 0)`
-      : `translate3d(${initialPosition.x}px, ${initialPosition.y}px, 0)`,
+    transform: `translate(${position.x + (transform?.x || 0)}px, ${
+      position.y + (transform?.y || 0)
+    }px)`,
     position: "absolute",
-    zIndex: 10, // Ensure elements are always visible
+    zIndex: 10,
     touchAction: "none",
   };
 
@@ -64,7 +61,7 @@ const DraggableLabElement = ({ symbol, initialPosition }) => {
       {...listeners}
       {...attributes}
     >
-      {symbol}
+      {id}
     </div>
   );
 };
