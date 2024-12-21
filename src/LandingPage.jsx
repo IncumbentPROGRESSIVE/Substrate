@@ -7,18 +7,16 @@ const LandingPage = () => {
   const [isLabPadVisible, setIsLabPadVisible] = useState(false);
   const [elementsOnLabPad, setElementsOnLabPad] = useState([]);
 
-  // Handle adding a new element to the LabPad
   const handleElementDragEnd = (id) => {
     if (id) {
       setElementsOnLabPad((prev) => {
         if (prev.find((el) => el.id === id)) return prev; // Avoid duplicates
-        return [...prev, { id, position: { x: 0, y: 0 } }];
+        return [...prev, { id, position: { x: 50, y: 50 } }]; // Initial position
       });
-      setIsLabPadVisible(true); // Show the LabPad when an element is dragged
+      setIsLabPadVisible(true); // Show the LabPad
     }
   };
 
-  // Update the position of an element on the LabPad
   const updateElementPosition = (id, positionUpdater) => {
     setElementsOnLabPad((prev) =>
       prev.map((el) =>
@@ -27,25 +25,24 @@ const LandingPage = () => {
     );
   };
 
-  // Handle returning to the Periodic Table
   const handleBackToTable = () => {
-    setIsLabPadVisible(false); // Show the Periodic Table
+    setIsLabPadVisible(false);
   };
 
   return (
     <div className="landing-page">
       {isLabPadVisible ? (
-        <LabPad
-          elements={elementsOnLabPad}
-          updateElementPosition={updateElementPosition}
-        />
+        <>
+          <LabPad
+            elements={elementsOnLabPad}
+            updateElementPosition={updateElementPosition}
+          />
+          <button className="toggle-button" onClick={handleBackToTable}>
+            Back to Periodic Table
+          </button>
+        </>
       ) : (
         <PeriodicTable onElementDragEnd={handleElementDragEnd} />
-      )}
-      {isLabPadVisible && (
-        <button className="toggle-button" onClick={handleBackToTable}>
-          Back to Periodic Table
-        </button>
       )}
     </div>
   );
