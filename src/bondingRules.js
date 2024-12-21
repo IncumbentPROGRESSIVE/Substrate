@@ -2,17 +2,56 @@ import { gcd } from "./mathUtils"; // Ensure this file exists and is correctly l
 
 export const bondingRules = {
   elements: {
-    Na: { valence: 1, type: "ionic", bondsWith: ["Cl"] },
-    Cl: { valence: -1, type: "ionic", bondsWith: ["Na", "H"] },
-    H: { valence: 1, type: "covalent", bondsWith: ["O", "Cl", "N"] },
-    O: { valence: -2, type: "covalent", bondsWith: ["H", "C", "N"] },
-    C: { valence: 4, type: "covalent", bondsWith: ["H", "O", "N"] },
+    // Alkali metals
+    H: { valence: 1, type: "covalent", bondsWith: ["O", "N", "Cl", "C"] },
+    Li: { valence: 1, type: "ionic", bondsWith: ["Cl", "O", "F"] },
+    Na: { valence: 1, type: "ionic", bondsWith: ["Cl", "O", "F"] },
+    K: { valence: 1, type: "ionic", bondsWith: ["Cl", "O", "F"] },
+
+    // Alkaline earth metals
+    Mg: { valence: 2, type: "ionic", bondsWith: ["Cl", "O", "S"] },
+    Ca: { valence: 2, type: "ionic", bondsWith: ["Cl", "O", "S"] },
+    Ba: { valence: 2, type: "ionic", bondsWith: ["Cl", "O", "S"] },
+
+    // Halogens
+    F: { valence: -1, type: "ionic", bondsWith: ["Na", "K", "H"] },
+    Cl: { valence: -1, type: "ionic", bondsWith: ["Na", "K", "H", "C"] },
+    Br: { valence: -1, type: "ionic", bondsWith: ["Na", "K", "H"] },
+    I: { valence: -1, type: "ionic", bondsWith: ["Na", "K", "H"] },
+
+    // Chalcogens
+    O: { valence: -2, type: "covalent", bondsWith: ["H", "C", "N", "S"] },
+    S: { valence: -2, type: "covalent", bondsWith: ["H", "O", "C"] },
+    Se: { valence: -2, type: "covalent", bondsWith: ["H", "O", "C"] },
+
+    // Group 14 (Carbon group)
+    C: { valence: 4, type: "covalent", bondsWith: ["H", "O", "N", "S"] },
+    Si: { valence: 4, type: "covalent", bondsWith: ["H", "O", "C"] },
+
+    // Group 15 (Nitrogen group)
     N: { valence: -3, type: "covalent", bondsWith: ["H", "C", "O"] },
-    K: { valence: 1, type: "ionic", bondsWith: ["Cl", "O"] },
-    Mg: { valence: 2, type: "ionic", bondsWith: ["Cl", "O"] },
-    Ca: { valence: 2, type: "ionic", bondsWith: ["Cl", "O"] },
-    S: { valence: -2, type: "covalent", bondsWith: ["H", "O"] },
-    Fe: { valence: 3, type: "ionic", bondsWith: ["Cl", "O"] },
+    P: { valence: -3, type: "covalent", bondsWith: ["H", "O", "Cl"] },
+
+    // Transition metals (simplified)
+    Fe: { valence: 3, type: "ionic", bondsWith: ["O", "Cl", "S"] },
+    Cu: { valence: 2, type: "ionic", bondsWith: ["O", "Cl", "S"] },
+    Zn: { valence: 2, type: "ionic", bondsWith: ["O", "Cl", "S"] },
+    Ag: { valence: 1, type: "ionic", bondsWith: ["O", "Cl", "S"] },
+
+    // Noble gases (simplified)
+    He: { valence: 0, type: "inert", bondsWith: [] },
+    Ne: { valence: 0, type: "inert", bondsWith: [] },
+    Ar: { valence: 0, type: "inert", bondsWith: [] },
+
+    // Common polyatomic ions
+    NH4: { valence: 1, type: "ionic", bondsWith: ["Cl", "NO3"] },
+    NO3: { valence: -1, type: "ionic", bondsWith: ["Na", "K", "Ca"] },
+    SO4: { valence: -2, type: "ionic", bondsWith: ["Na", "K", "Ca"] },
+    PO4: { valence: -3, type: "ionic", bondsWith: ["Na", "K", "Ca"] },
+
+    // Special cases (water, carbon dioxide, etc.)
+    H2O: { valence: 0, type: "covalent", bondsWith: [] },
+    CO2: { valence: 0, type: "covalent", bondsWith: [] },
   },
 };
 
