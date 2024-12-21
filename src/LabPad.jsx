@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   DndContext,
   useDraggable,
@@ -9,8 +9,13 @@ import {
 import { canBond, createCompound } from "./bondingRules";
 import "./LabPad.css";
 
-const LabPad = ({ elements, updateElementPosition }) => {
-  const [compounds, setCompounds] = useState([]); // Store bonded compounds
+const LabPad = ({
+  elements,
+  compounds,
+  updateElementPosition,
+  updateCompoundPosition,
+  addCompound,
+}) => {
   const sensors = useSensors(useSensor(PointerSensor));
 
   const handleDragEnd = (event) => {
@@ -19,14 +24,20 @@ const LabPad = ({ elements, updateElementPosition }) => {
 
     if (!id || !delta) return;
 
-    // Update the dragged element's position
-    updateElementPosition(id, (prevPosition) => ({
-      x: prevPosition.x + delta.x,
-      y: prevPosition.y + delta.y,
-    }));
-
-    // Detect collisions and bond elements if needed
-    detectCollisions(id);
+    // Update the position of either an element or a compound
+    const isCompound = id.startsWith("compound-");
+    if (isCompound) {
+      updateCompoundPosition(id, (prevPosition) => ({
+        x: prevPosition.x + delta.x,
+        y: prevPosition.y + delta.y,
+      }));
+    } else {
+      updateElementPosition(id, (prevPosition) => ({
+        x: prevPosition.x + delta.x,
+        y: prevPosition.y + delta.y,
+      }));
+      detectCollisions(id); // Detect collisions for bonding
+    }
   };
 
   const detectCollisions = (draggedId) => {
@@ -43,11 +54,12 @@ const LabPad = ({ elements, updateElementPosition }) => {
   const handleBonding = (element1, element2) => {
     if (canBond(element1.id, element2.id)) {
       const newCompound = {
+        id: `compound-${Date.now()}`, // Unique ID for the compound
         ...createCompound(element1.id, element2.id),
         position: element1.position, // Compound takes the position of the first element
       };
 
-      setCompounds((prev) => [...prev, newCompound]);
+      addCompound(newCompound);
       removeElement(element1.id);
       removeElement(element2.id);
     }
@@ -69,8 +81,12 @@ const LabPad = ({ elements, updateElementPosition }) => {
               position={element.position}
             />
           ))}
-        {compounds.map((compound, index) => (
-          <Compound key={index} compound={compound} />
+        {compounds.map((compound) => (
+          <DraggableCompound
+            key={compound.id}
+            id={compound.id}
+            compound={compound}
+          />
         ))}
       </div>
     </DndContext>
@@ -104,24 +120,36 @@ const DraggableElement = ({ id, position }) => {
   );
 };
 
-const Compound = ({ compound }) => {
-  const { formula, type, position } = compound;
+const DraggableCompound = ({ id, compound }) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id,
+  });
 
   const style = {
-    transform: `translate(${position.x}px, ${position.y}px)`,
+    transform: `translate(${compound.position.x + (transform?.x || 0)}px, ${
+      compound.position.y + (transform?.y || 0)
+    }px)`,
     position: "absolute",
     zIndex: 10,
-    backgroundColor: type === "ionic" ? "lightgreen" : "lightyellow",
+    backgroundColor: compound.type === "ionic" ? "lightgreen" : "lightyellow",
     borderRadius: "8px",
     padding: "10px",
     fontSize: "1.2rem",
     fontWeight: "bold",
   };
 
-  return <div style={style}>{formula}</div>;
+  return (
+    <div
+      ref={setNodeRef}
+      className="compound"
+      style={style}
+      {...listeners}
+      {...attributes}
+    >
+      {compound.formula}
+    </div>
+  );
 };
-
-export default LabPad;
 
 /**
  * Helper function to check if two elements collide
@@ -136,3 +164,5 @@ const isColliding = (el1, el2) => {
 
   return distance < 50; // Example threshold, adjust as needed
 };
+
+export default LabPad;

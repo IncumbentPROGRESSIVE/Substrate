@@ -6,6 +6,7 @@ import "./App.css";
 const LandingPage = () => {
   const [isLabPadVisible, setIsLabPadVisible] = useState(false);
   const [elementsOnLabPad, setElementsOnLabPad] = useState([]);
+  const [compoundsOnLabPad, setCompoundsOnLabPad] = useState([]); // New state for compounds
 
   const handleElementDragEnd = (id) => {
     if (id) {
@@ -25,6 +26,20 @@ const LandingPage = () => {
     );
   };
 
+  const updateCompoundPosition = (id, positionUpdater) => {
+    setCompoundsOnLabPad((prev) =>
+      prev.map((compound) =>
+        compound.id === id
+          ? { ...compound, position: positionUpdater(compound.position) }
+          : compound
+      )
+    );
+  };
+
+  const addCompound = (compound) => {
+    setCompoundsOnLabPad((prev) => [...prev, compound]);
+  };
+
   const handleBackToTable = () => {
     setIsLabPadVisible(false);
   };
@@ -35,7 +50,10 @@ const LandingPage = () => {
         <>
           <LabPad
             elements={elementsOnLabPad}
+            compounds={compoundsOnLabPad}
             updateElementPosition={updateElementPosition}
+            updateCompoundPosition={updateCompoundPosition}
+            addCompound={addCompound}
           />
           <button className="toggle-button" onClick={handleBackToTable}>
             Back to Periodic Table
