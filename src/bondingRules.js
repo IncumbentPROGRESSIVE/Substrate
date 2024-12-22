@@ -1,4 +1,4 @@
-import { gcd } from "./mathUtils"; // Ensure this file exists and is correctly located
+import { gcd } from "./mathUtils";
 
 export const bondingRules = {
   elements: {
@@ -71,6 +71,7 @@ export const canBond = (element1, element2) => {
 
 /**
  * Creates a new compound based on bonded elements.
+ * Prioritizes smaller compounds like OH over larger compounds like H2O.
  * @param {string} element1 - Symbol of the first element.
  * @param {string} element2 - Symbol of the second element.
  * @returns {object} - The compound object.
@@ -85,11 +86,26 @@ export const createCompound = (element1, element2) => {
     );
   }
 
-  // Ensure the cation (positive valence) is first
+  // Special case for OH
+  if (
+    (element1 === "O" && element2 === "H") ||
+    (element1 === "H" && element2 === "O")
+  ) {
+    return {
+      formula: "OH",
+      type: "covalent",
+      components: [
+        { element: "O", count: 1 },
+        { element: "H", count: 1 },
+      ],
+    };
+  }
+
+  // General bonding logic for other compounds
   const [cation, anion] =
     e1.valence > 0 ? [element1, element2] : [element2, element1];
-  const absCationValence = Math.abs(bondingRules.elements[cation].valence);
-  const absAnionValence = Math.abs(bondingRules.elements[anion].valence);
+  const absCationValence = Math.abs(e1.valence);
+  const absAnionValence = Math.abs(e2.valence);
 
   const lcm =
     (absCationValence * absAnionValence) /
@@ -104,7 +120,7 @@ export const createCompound = (element1, element2) => {
 
   return {
     formula,
-    type: bondingRules.elements[cation].type,
+    type: e1.type,
     components: [
       { element: cation, count: countCation },
       { element: anion, count: countAnion },
