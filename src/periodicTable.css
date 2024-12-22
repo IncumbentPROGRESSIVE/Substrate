@@ -7,6 +7,7 @@ body {
   width: 100%;
   height: 100%;
   font-family: Arial, sans-serif;
+  background-color: #f4f4f9; /* Light background for contrast */
 }
 
 /* Wrapper for the entire table */
@@ -16,92 +17,86 @@ body {
   align-items: center;
   height: 100vh;
   width: 100vw;
-
   box-sizing: border-box;
+  padding: 20px;
 }
 
 /* Periodic Table layout */
 .periodic-table {
   display: grid;
   grid-template-columns: repeat(18, 1fr); /* 18 columns */
-  grid-auto-rows: minmax(45px, 1fr); /* Taller rows for better spacing */
-  gap: 14px 12px; /* 16px vertical gap, 8px horizontal gap */
-  width: calc(95% - 20px); /* Slightly smaller table to fit comfortably */
-  height: calc(95% - 20px);
+  gap: 12px; /* Balanced spacing */
+  width: 95%; /* Slightly smaller to fit comfortably */
+  height: 95%;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
 /* Styling for individual elements */
 .element {
-  background-color: var(--element-color);
+  background-color: var(--element-color, #f9f9f9); /* Light default color */
   border: 1px solid #ddd;
-  border-radius: 12px; /* Rounded corners */
-  aspect-ratio: 1 / 1; /* Keep elements square */
+  border-radius: 8px; /* Subtle rounded corners */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s;
   cursor: pointer;
   position: relative;
-  overflow: hidden; /* Avoid content overflow */
+  overflow: hidden;
+  aspect-ratio: 1 / 1; /* Ensure perfect square dimensions */
 }
 
 /* Hover effect */
 .element:hover {
-  transform: translateY(-3px); /* Gentle lift */
+  transform: scale(1.05); /* Subtle zoom on hover */
   background-color: #fff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Styling for element text */
 .number {
-  font-size: 0.6rem;
-  margin-bottom: 2px;
+  font-size: 0.5rem;
+  color: #333;
 }
 
 .symbol {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: bold;
-  margin-bottom: 2px;
+  color: #000;
 }
 
 .name {
-  font-size: 0.55rem;
-  margin-bottom: 2px;
+  font-size: 0.6rem;
+  color: #666;
+  margin-top: 4px;
 }
 
-/* Atomic mass styling - Hidden initially */
+/* Atomic mass styling */
 .atomic-mass {
   font-size: 0.5rem;
-  color: #555;
-  height: 1em; /* Reserve space to avoid jitter */
-  line-height: 1em;
+  color: #777;
 }
 
-/* Reveal atomic mass on hover */
-.element:hover .atomic-mass {
-  visibility: visible;
-}
-
+/* Button for toggling view */
 .toggle-button {
   position: fixed;
-  bottom: 10px;
-  left: 10px;
-  padding: 12px 18px;
+  bottom: 20px;
+  left: 20px;
+  padding: 10px 15px;
   background: linear-gradient(45deg, #6a11cb, #2575fc);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
-  z-index: 5;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .toggle-button:hover {
@@ -109,39 +104,46 @@ body {
   transform: scale(1.1);
 }
 
-/* Element category colors */
+/* Group colors */
 .alkali-metal {
-  background-color: #f28f3b;
+  background-color: #ffcccb; /* Soft red */
 }
 
 .alkaline-earth-metal {
-  background-color: #f94144;
+  background-color: #ffe5b4; /* Peach */
 }
 
 .transition-metal {
-  background-color: #577590;
+  background-color: #cce7ff; /* Light blue */
 }
 
 .other-metal {
-  background-color: #f3722c;
+  background-color: #fff3b4; /* Pale yellow */
 }
 
 .nonmetal {
-  background-color: #90be6d;
+  background-color: #ccffcc; /* Light green */
 }
 
 .metalloid {
-  background-color: #277da1;
+  background-color: #dcdcdc; /* Silver */
 }
 
 .noble-gas {
-  background-color: #4d908e;
+  background-color: #ffcce7; /* Soft pink */
 }
 
 .lanthanide {
-  background-color: #f8961e;
+  background-color: #ffcce5; /* Light lavender */
 }
 
 .actinide {
-  background-color: #f9844a;
+  background-color: #ffd700; /* Gold */
+}
+
+/* Special alignment for gaps in the periodic table */
+.periodic-table .gap {
+  grid-column: span 2; /* Adjust as needed */
+  background-color: transparent;
+  pointer-events: none;
 }

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import LabPad from "./LabPad";
 import PeriodicTable from "./PeriodicTable";
+//import AccountState from "./AccountState";
+import { DndContext } from "@dnd-kit/core";
 import "./App.css";
 
 const LandingPage = () => {
   const [isLabPadVisible, setIsLabPadVisible] = useState(false);
   const [elementsOnLabPad, setElementsOnLabPad] = useState([]);
-  const [compoundsOnLabPad, setCompoundsOnLabPad] = useState([]); // New state for compounds
+  const [compoundsOnLabPad, setCompoundsOnLabPad] = useState([]);
 
   const handleElementDragEnd = (id) => {
     if (id) {
@@ -46,22 +48,25 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
-      {isLabPadVisible ? (
-        <>
-          <LabPad
-            elements={elementsOnLabPad}
-            compounds={compoundsOnLabPad}
-            updateElementPosition={updateElementPosition}
-            updateCompoundPosition={updateCompoundPosition}
-            addCompound={addCompound}
-          />
-          <button className="toggle-button" onClick={handleBackToTable}>
-            Back to Periodic Table
-          </button>
-        </>
-      ) : (
-        <PeriodicTable onElementDragEnd={handleElementDragEnd} />
-      )}
+      {/*<AccountState /> */}
+      <DndContext>
+        {isLabPadVisible ? (
+          <>
+            <LabPad
+              elements={elementsOnLabPad}
+              compounds={compoundsOnLabPad}
+              updateElementPosition={updateElementPosition}
+              updateCompoundPosition={updateCompoundPosition}
+              addCompound={addCompound}
+            />
+            <button className="toggle-button" onClick={handleBackToTable}>
+              Back to Periodic Table
+            </button>
+          </>
+        ) : (
+          <PeriodicTable onElementDragEnd={handleElementDragEnd} />
+        )}
+      </DndContext>
     </div>
   );
 };

@@ -85,24 +85,29 @@ export const createCompound = (element1, element2) => {
     );
   }
 
-  const absValence1 = Math.abs(e1.valence);
-  const absValence2 = Math.abs(e2.valence);
+  // Ensure the cation (positive valence) is first
+  const [cation, anion] =
+    e1.valence > 0 ? [element1, element2] : [element2, element1];
+  const absCationValence = Math.abs(bondingRules.elements[cation].valence);
+  const absAnionValence = Math.abs(bondingRules.elements[anion].valence);
 
-  const lcm = (absValence1 * absValence2) / gcd(absValence1, absValence2);
+  const lcm =
+    (absCationValence * absAnionValence) /
+    gcd(absCationValence, absAnionValence);
 
-  const count1 = lcm / absValence1;
-  const count2 = lcm / absValence2;
+  const countCation = lcm / absCationValence;
+  const countAnion = lcm / absAnionValence;
 
   const formula =
-    (count1 > 1 ? `${element1}${count1}` : element1) +
-    (count2 > 1 ? `${element2}${count2}` : element2);
+    (countCation > 1 ? `${cation}${countCation}` : cation) +
+    (countAnion > 1 ? `${anion}${countAnion}` : anion);
 
   return {
     formula,
-    type: e1.type,
+    type: bondingRules.elements[cation].type,
     components: [
-      { element: element1, count: count1 },
-      { element: element2, count: count2 },
+      { element: cation, count: countCation },
+      { element: anion, count: countAnion },
     ],
   };
 };
