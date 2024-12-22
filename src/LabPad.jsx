@@ -42,10 +42,14 @@ const LabPad = ({
 
   const detectCollisions = (draggedId) => {
     const draggedElement = elements.find((el) => el.id === draggedId);
-    if (!draggedElement) return;
+    if (!draggedElement || !draggedElement.position) return; // Ensure the dragged element exists and has a position
 
     elements.forEach((el) => {
-      if (el.id !== draggedId && isColliding(draggedElement, el)) {
+      if (
+        el.id !== draggedId &&
+        el.position && // Ensure the other element has a valid position
+        isColliding(draggedElement, el)
+      ) {
         handleBonding(draggedElement, el);
       }
     });
@@ -67,6 +71,16 @@ const LabPad = ({
 
   const removeElement = (id) => {
     updateElementPosition(id, () => null); // Safely remove element
+  };
+
+  const isColliding = (el1, el2) => {
+    if (!el1.position || !el2.position) return false; // Ensure both elements have valid positions
+
+    const dx = el1.position.x - el2.position.x;
+    const dy = el1.position.y - el2.position.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    return distance < 50; // Example threshold, adjust as needed
   };
 
   return (
@@ -149,20 +163,6 @@ const DraggableCompound = ({ id, compound }) => {
       {compound.formula}
     </div>
   );
-};
-
-/**
- * Helper function to check if two elements collide
- * @param {object} el1 - First element.
- * @param {object} el2 - Second element.
- * @returns {boolean} - True if they collide.
- */
-const isColliding = (el1, el2) => {
-  const dx = el1.position.x - el2.position.x;
-  const dy = el1.position.y - el2.position.y;
-  const distance = Math.sqrt(dx * dx + dy * dy);
-
-  return distance < 50; // Example threshold, adjust as needed
 };
 
 export default LabPad;
