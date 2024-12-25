@@ -56,21 +56,22 @@ const LabPad = ({
   };
 
   const handleBonding = (element1, element2) => {
-    if (canBond(element1.id, element2.id)) {
+    if (canBond(element1.displayName, element2.displayName)) {
       const newCompound = {
         id: `compound-${Date.now()}`, // Unique ID for the compound
-        ...createCompound(element1.id, element2.id),
+        ...createCompound(element1.displayName, element2.displayName),
         position: element1.position, // Compound takes the position of the first element
       };
 
       addCompound(newCompound);
-      removeElement(element1.id);
-      removeElement(element2.id);
+      removeElements([element1.id, element2.id]);
     }
   };
 
-  const removeElement = (id) => {
-    updateElementPosition(id, () => null); // Safely remove element
+  const removeElements = (ids) => {
+    ids.forEach(
+      (id) => updateElementPosition(id, () => null) // Safely remove elements
+    );
   };
 
   const isColliding = (el1, el2) => {
@@ -92,6 +93,7 @@ const LabPad = ({
             <DraggableElement
               key={element.id}
               id={element.id}
+              displayName={element.displayName} // Pass the display name
               position={element.position}
             />
           ))}
@@ -107,7 +109,7 @@ const LabPad = ({
   );
 };
 
-const DraggableElement = ({ id, position }) => {
+const DraggableElement = ({ id, displayName, position }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id,
   });
@@ -129,7 +131,7 @@ const DraggableElement = ({ id, position }) => {
       {...listeners}
       {...attributes}
     >
-      {id}
+      {displayName} {/* Display the name instead of the full ID */}
     </div>
   );
 };
