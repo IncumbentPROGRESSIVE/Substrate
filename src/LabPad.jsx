@@ -81,7 +81,7 @@ const LabPad = ({
     const dy = el1.position.y - el2.position.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    return distance < 50; // Example threshold, adjust as needed
+    return distance < 100; // Expanded bonding distance threshold
   };
 
   return (
@@ -121,6 +121,9 @@ const DraggableElement = ({ id, displayName, position }) => {
     position: "absolute",
     zIndex: 10,
     touchAction: "none",
+    color: "black", // Only the symbol is visible
+    fontSize: "1.5rem",
+    fontWeight: "bold",
   };
 
   return (
@@ -147,10 +150,7 @@ const DraggableCompound = ({ id, compound }) => {
     }px)`,
     position: "absolute",
     zIndex: 10,
-    backgroundColor: compound.type === "ionic" ? "lightgreen" : "lightyellow",
-    borderRadius: "8px",
-    padding: "10px",
-    fontSize: "1.2rem",
+    fontSize: "1.5rem",
     fontWeight: "bold",
   };
 

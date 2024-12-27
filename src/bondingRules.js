@@ -42,16 +42,6 @@ export const bondingRules = {
     He: { valence: 0, type: "inert", bondsWith: [] },
     Ne: { valence: 0, type: "inert", bondsWith: [] },
     Ar: { valence: 0, type: "inert", bondsWith: [] },
-
-    // Common polyatomic ions
-    NH4: { valence: 1, type: "ionic", bondsWith: ["Cl", "NO3"] },
-    NO3: { valence: -1, type: "ionic", bondsWith: ["Na", "K", "Ca"] },
-    SO4: { valence: -2, type: "ionic", bondsWith: ["Na", "K", "Ca"] },
-    PO4: { valence: -3, type: "ionic", bondsWith: ["Na", "K", "Ca"] },
-
-    // Special cases (water, carbon dioxide, etc.)
-    H2O: { valence: 0, type: "covalent", bondsWith: [] },
-    CO2: { valence: 0, type: "covalent", bondsWith: [] },
   },
 };
 
@@ -71,7 +61,7 @@ export const canBond = (element1, element2) => {
 
 /**
  * Creates a new compound based on bonded elements.
- * Prioritizes smaller compounds like OH over larger compounds like H2O.
+ * Prioritizes smaller compounds like OH over larger compounds like H₂O.
  * @param {string} element1 - Symbol of the first element.
  * @param {string} element2 - Symbol of the second element.
  * @returns {object} - The compound object.
@@ -80,13 +70,14 @@ export const createCompound = (element1, element2) => {
   const e1 = bondingRules.elements[element1];
   const e2 = bondingRules.elements[element2];
 
+  // Validate both elements exist and can bond
   if (!e1 || !e2 || !canBond(element1, element2)) {
     throw new Error(
       `Cannot create a compound with ${element1} and ${element2}`
     );
   }
 
-  // Special case for OH
+  // Handle special cases like OH
   if (
     (element1 === "O" && element2 === "H") ||
     (element1 === "H" && element2 === "O")
@@ -101,29 +92,32 @@ export const createCompound = (element1, element2) => {
     };
   }
 
-  // General bonding logic for other compounds
-  const [cation, anion] =
-    e1.valence > 0 ? [element1, element2] : [element2, element1];
+  // General logic for creating compounds based on valence
   const absCationValence = Math.abs(e1.valence);
   const absAnionValence = Math.abs(e2.valence);
 
+  // Find the greatest common divisor (GCD) to simplify the ratio
   const lcm =
     (absCationValence * absAnionValence) /
     gcd(absCationValence, absAnionValence);
 
-  const countCation = lcm / absCationValence;
-  const countAnion = lcm / absAnionValence;
+  // Determine the counts of each element in the simplest ratio
+  const cationCount = lcm / absCationValence;
+  const anionCount = lcm / absAnionValence;
 
+  // Construct the formula
+  const [cation, anion] =
+    e1.valence > 0 ? [element1, element2] : [element2, element1];
   const formula =
-    (countCation > 1 ? `${cation}${countCation}` : cation) +
-    (countAnion > 1 ? `${anion}${countAnion}` : anion);
+    (cationCount > 1 ? `${cation}${cationCount}` : cation) +
+    (anionCount > 1 ? `${anion}${anionCount}` : anion);
 
   return {
     formula,
-    type: e1.type,
+    type: e1.type, // Assumes type of the compound is the same as the cation
     components: [
-      { element: cation, count: countCation },
-      { element: anion, count: countAnion },
+      { element: cation, count: cationCount },
+      { element: anion, count: anionCount },
     ],
   };
 };
