@@ -253,3 +253,21 @@ body {
   height: 24px;
   pointer-events: none;
 }
+
+.chemical-equations {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: white;
+  padding: 10px;
+  border: 1px solid black;
+  z-index: 10;
+}
+
+.lab-element:hover {
+  cursor: pointer;
+}
+
+.equation {
+  margin-bottom: 10px;
+}

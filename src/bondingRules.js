@@ -1,7 +1,76 @@
-import { gcd } from "./mathUtils";
-
 export const bondingRules = {
+  reactions: {
+    // Example reactions with products
+    "Li + H": "LiH",
+    "Na + H": "NaH",
+    "K + H": "KH",
+    "Rb + H": "RbH",
+    "Cs + H": "CsH",
+    "Li + F": "LiF",
+    "Na + F": "NaF",
+    "K + F": "KF",
+    "Rb + F": "RbF",
+    "Cs + F": "CsF",
+    "Li + Cl": "LiCl",
+    "Na + Cl": "NaCl",
+    "K + Cl": "KCl",
+    "Rb + Cl": "RbCl",
+    "Cs + Cl": "CsCl",
+    "Li + Br": "LiBr",
+    "Na + Br": "NaBr",
+    "K + Br": "KBr",
+    "Rb + Br": "RbBr",
+    "Cs + Br": "CsBr",
+    "Li + I": "LiI",
+    "Na + I": "NaI",
+    "K + I": "KI",
+    "Rb + I": "RbI",
+    "Cs + I": "CsI",
+    "Be + H": "BeH",
+    "Mg + H": "MgH",
+    "Ca + H": "CaH",
+    "Sr + H": "SrH",
+    "Ba + H": "BaH",
+    "Be + F": "BeF",
+    "Mg + F": "MgF",
+    "Ca + F": "CaF",
+    "Sr + F": "SrF",
+    "Ba + F": "BaF",
+    "Be + Cl": "BeCl",
+    "Mg + Cl": "MgCl",
+    "Ca + Cl": "CaCl",
+    "Sr + Cl": "SrCl",
+    "Ba + Cl": "BaCl",
+    "Be + Br": "BeBr",
+    "Mg + Br": "MgBr",
+    "Ca + Br": "CaBr",
+    "Sr + Br": "SrBr",
+    "Ba + Br": "BaBr",
+    "Be + I": "BeI",
+    "Mg + I": "MgI",
+    "Ca + I": "CaI",
+    "Sr + I": "SrI",
+    "Ba + I": "BaI",
+    // Transition Metals
+    "Fe + Cl": "FeCl",
+    "Co + Cl": "CoCl",
+    "Ni + Cl": "NiCl",
+    "Cu + Cl": "CuCl",
+    "Zn + Cl": "ZnCl",
+    "Ag + Cl": "AgCl",
+    // Halogen-Halogen
+    "Cl + F": "ClF",
+    "Br + F": "BrF",
+    "I + F": "IF",
+    // Noble Gas Compounds
+    "Xe + F": "XeF",
+    "Kr + F": "KrF",
+    "H + O": "OH",
+    // Add other combinations here
+  },
+
   elements: {
+    // Keep your existing elements definition here
     // Alkali metals
     H: { valence: 1, type: "covalent", bondsWith: ["O", "N", "Cl", "C"] },
     Li: { valence: 1, type: "ionic", bondsWith: ["Cl", "O", "F"] },
@@ -52,72 +121,30 @@ export const bondingRules = {
  * @returns {boolean} - True if the elements can bond.
  */
 export const canBond = (element1, element2) => {
-  const e1 = bondingRules.elements[element1];
-  const e2 = bondingRules.elements[element2];
-
-  if (!e1 || !e2) return false; // Invalid elements
-  return e1.bondsWith.includes(element2) && e2.bondsWith.includes(element1);
+  const reactants = [element1, element2].sort().join(" + ");
+  return bondingRules.reactions.hasOwnProperty(reactants);
 };
 
 /**
  * Creates a new compound based on bonded elements.
- * Prioritizes smaller compounds like OH over larger compounds like H₂O.
  * @param {string} element1 - Symbol of the first element.
  * @param {string} element2 - Symbol of the second element.
  * @returns {object} - The compound object.
  */
 export const createCompound = (element1, element2) => {
-  const e1 = bondingRules.elements[element1];
-  const e2 = bondingRules.elements[element2];
+  const reactants = [element1, element2].sort().join(" + ");
+  const formula = bondingRules.reactions[reactants];
 
-  // Validate both elements exist and can bond
-  if (!e1 || !e2 || !canBond(element1, element2)) {
-    throw new Error(
-      `Cannot create a compound with ${element1} and ${element2}`
-    );
+  if (!formula) {
+    throw new Error(`No predefined reaction for ${element1} and ${element2}`);
   }
-
-  // Handle special cases like OH
-  if (
-    (element1 === "O" && element2 === "H") ||
-    (element1 === "H" && element2 === "O")
-  ) {
-    return {
-      formula: "OH",
-      type: "covalent",
-      components: [
-        { element: "O", count: 1 },
-        { element: "H", count: 1 },
-      ],
-    };
-  }
-
-  // General logic for creating compounds based on valence
-  const absCationValence = Math.abs(e1.valence);
-  const absAnionValence = Math.abs(e2.valence);
-
-  // Find the greatest common divisor (GCD) to simplify the ratio
-  const lcm =
-    (absCationValence * absAnionValence) /
-    gcd(absCationValence, absAnionValence);
-
-  // Determine the counts of each element in the simplest ratio
-  const cationCount = lcm / absCationValence;
-  const anionCount = lcm / absAnionValence;
-
-  // Construct the formula
-  const [cation, anion] =
-    e1.valence > 0 ? [element1, element2] : [element2, element1];
-  const formula =
-    (cationCount > 1 ? `${cation}${cationCount}` : cation) +
-    (anionCount > 1 ? `${anion}${anionCount}` : anion);
 
   return {
     formula,
-    type: e1.type, // Assumes type of the compound is the same as the cation
+    type: "ionic", // Default type; adjust based on your rules
     components: [
-      { element: cation, count: cationCount },
-      { element: anion, count: anionCount },
+      { element: element1, count: 1 },
+      { element: element2, count: 1 },
     ],
   };
 };
