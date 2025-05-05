@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import LabPad from "./LabPad";
 import PeriodicTable from "./PeriodicTable";
+import AccountState from "./AccountState";
 import { DndContext } from "@dnd-kit/core";
 import "./App.css";
 
@@ -135,13 +136,11 @@ const LandingPage = () => {
       setElementsOnLabPad((prev) => [
         ...prev,
         {
-          id: `${id}-${Date.now()}`, // Unique ID for tracking
-          displayName: id, // Display name remains the element symbol
+          id: `${id}-${Date.now()}`,
+          displayName: id,
           position: { x: 50, y: 50 },
         },
       ]);
-
-      // Decrease count for the dragged element
       setAllElements((prev) =>
         prev.map((el) => (el.id === id ? { ...el, count: el.count - 1 } : el))
       );
@@ -177,6 +176,7 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
+      <AccountState /> {/* ✅ Reintroduced AccountState */}
       <DndContext>
         {isLabPadVisible ? (
           <>

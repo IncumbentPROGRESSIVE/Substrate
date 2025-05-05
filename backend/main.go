@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 )
 
@@ -19,8 +21,17 @@ type User struct {
 var db *sql.DB
 
 func initDB() {
-	dsn := "colinleary:00005828@tcp(localhost:3306)/epdata"
-	var err error
+	// Load .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	dsn := os.Getenv("MYSQL_DSN")
+	if dsn == "" {
+		log.Fatal("MYSQL_DSN not found in environment variables")
+	}
+
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatalf("Error opening database: %v", err)
@@ -31,7 +42,6 @@ func initDB() {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
 
-	// Create users table if it doesn't exist
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS users (
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		username VARCHAR(50) UNIQUE NOT NULL,
