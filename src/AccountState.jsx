@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import "./App.css";
 
 // Custom hook for input handling
+//New branch
 const useInput = (initialValue) => {
   const [value, setValue] = useState(initialValue);
   const handleChange = (e) => setValue(e.target.value);
